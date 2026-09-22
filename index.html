@@ -4,11 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Cube Line</title>
-<meta name="theme-color" content="#0b0f1a">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="01-key-art.png">
 <link rel="preload" as="image" href="01-key-art.png">
 <style>
 @font-face{
@@ -210,7 +205,7 @@ body{display:grid; place-items:start center;
 .обучение-кнопка:active{transform:translateY(3px);box-shadow:inset 0 2px rgba(255,255,255,.3),0 1px 0 #073b81}
 .кубик-реакция{position:absolute;z-index:16;right:11px;top:92px;display:flex;align-items:center;gap:8px;max-width:230px;opacity:0;transform:translateX(18px) scale(.94);transition:opacity .2s ease,transform .26s cubic-bezier(.2,.85,.25,1.15);pointer-events:none}
 .кубик-реакция.on{opacity:1;transform:none}
-.кубик-портрет{flex:none;width:54px;height:54px;border:2px solid #a7f1ff;border-radius:50%;background:#f8f5ef url("02-character-sheet.png") 17% 84%/410px auto no-repeat;box-shadow:0 0 18px rgba(54,211,255,.68),inset 0 0 0 2px rgba(8,37,83,.45)}
+.кубик-портрет{flex:none;width:54px;height:54px;border:2px solid #a7f1ff;border-radius:50%;background:#f8f5ef url("../concepts/02-character-sheet.png") 17% 84%/410px auto no-repeat;box-shadow:0 0 18px rgba(54,211,255,.68),inset 0 0 0 2px rgba(8,37,83,.45)}
 .кубик-реакция[data-kind="добыча"] .кубик-портрет,.кубик-реакция[data-kind="готово"] .кубик-портрет{background-position:50% 84%}
 .кубик-реакция[data-kind="нет-цели"] .кубик-портрет{background-position:83% 84%}
 .кубик-реплика{position:relative;padding:9px 11px;border:1px solid rgba(132,231,255,.66);border-radius:13px;color:#f1fbff;background:rgba(3,18,52,.94);box-shadow:0 8px 22px rgba(0,5,28,.55),0 0 15px rgba(49,190,255,.17);font-size:12px;font-weight:600;line-height:1.3;text-align:left}
@@ -883,6 +878,17 @@ body{display:grid; place-items:start center;
 }
 .меню-результат.on{display:block}
 .меню-результат.серия{width:min(340px,90vw);padding:9px 10px 10px}
+.меню-результат.итог-боя{width:min(304px,86vw);padding:10px 11px 11px}
+.итог-боя-заголовок{color:#f4fcff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.итог-боя-метрики{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.итог-боя-метрика{padding:7px 3px 6px;border:1px solid rgba(119,224,255,.22);border-radius:10px;
+  background:rgba(30,102,174,.2)}
+.итог-боя-метрика b{display:block;color:#fff;font-size:16px;line-height:1;font-weight:600}
+.итог-боя-метрика span{display:block;margin-top:4px;color:#83ddfb;font-size:7px;line-height:1;
+  letter-spacing:.09em;text-transform:uppercase}
+.итог-боя-рекорд{margin-top:7px;color:#ffe27a;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.итог-боя-рекорд.обычный{color:#9ec6dc;font-weight:600}
+.итог-боя-поражение .итог-боя-заголовок{color:#ffd2dc}
 .серия-таблица{display:grid;gap:4px;text-align:left}
 .серия-строка{display:grid;grid-template-columns:minmax(72px,1.45fr) .72fr .55fr .72fr .55fr;
   align-items:center;gap:5px;padding:4px 6px;border-radius:8px;background:rgba(41,104,178,.18)}
@@ -1664,7 +1670,7 @@ const ЗВУКИ_ВШИТЫ = {
 const ЗВУК =   (()=>{
   // Готовый pre-rendered пакет: во время игры тоны не синтезируются.
   // Автономная версия читает вшитые WAV, серверная при необходимости — assets/audio.
-  const ПАПКА = "assets/audio/";
+  const ПАПКА = "../assets/audio/";
   let ctx = null, мастер = null, компрессор = null, фильтрБоя = null, шинаБоя = null, включён = true;
   let голосов = 0;
   const ПРЕДЕЛ_ГОЛОСОВ = 7;
@@ -2314,10 +2320,11 @@ const РЕЖИМ_ЕЖЕДНЕВНЫЙ = ПАРАМЕТРЫ_URL.get("daily") === 
 // Он нужен для калибровки человеческой сложности перед перестановкой уровней.
 const РЕЖИМ_КАЛИБРОВКИ = ПАРАМЕТРЫ_URL.get("calibration") === "1" &&
   !РЕЖИМ_ЕЖЕДНЕВНЫЙ && !РЕЖИМ_БЛИЦ && !РЕЖИМ_ИСПЫТАНИЯ;
-// Публичная ссылка без параметров открывает кампанию: игрок пришёл
-// играть, а не в одиночный бой. Прочие режимы — по своим ссылкам.
-const БЕЗ_ПАРАМЕТРОВ = [...ПАРАМЕТРЫ_URL.keys()].length === 0;
-const РЕЖИМ_КАМПАНИИ = (ПАРАМЕТРЫ_URL.get("campaign") === "1" || РЕЖИМ_КАЛИБРОВКИ || БЕЗ_ПАРАМЕТРОВ) &&
+// Публичный корневой адрес — это полная игра, а не одиночный первый уровень.
+// DEV и отдельный playtest сохраняют прежний изолированный режим; остальные
+// специальные режимы ниже по-прежнему имеют приоритет над кампанией.
+const РЕЖИМ_КАМПАНИИ = (ПАРАМЕТРЫ_URL.get("campaign") === "1" || РЕЖИМ_КАЛИБРОВКИ ||
+  (!РЕЖИМ_DEV && ПАРАМЕТРЫ_URL.get("playtest") !== "1")) &&
   !РЕЖИМ_ЕЖЕДНЕВНЫЙ && !РЕЖИМ_БЛИЦ && !РЕЖИМ_ИСПЫТАНИЯ;
 const ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА = РЕЖИМ_КАЛИБРОВКИ ? 12 : 20;
 const ЕЖЕДНЕВНАЯ_ДАТА = new Date().toISOString().slice(0,10);
@@ -2779,6 +2786,7 @@ function завершитьМетрикиБоя(победа){
   }else записатьМетрикуКампании(запись);
   return запись;
 }
+
 // Двухпальцевое приближение двигает только камеру по глубине. Геометрия,
 // координаты кубиков и группа фигуры не масштабируются.
 let базоваяДистанцияКамеры = 26;
@@ -7840,6 +7848,48 @@ function показатьСводкуСерии(элемент){
 function среднее(массив,ключ){
   return массив.length ? массив.reduce((с,р)=>с+(Number(р[ключ])||0),0)/массив.length : 0;
 }
+function лучшеРезультатКампании(новый,старый){
+  if(!старый) return true;
+  return (Number(новый.поворотов)||0)<(Number(старый.поворотов)||0) ||
+    ((Number(новый.поворотов)||0)===(Number(старый.поворотов)||0) &&
+      ((Number(новый.секунд)||0)<(Number(старый.секунд)||0) ||
+       ((Number(новый.секунд)||0)===(Number(старый.секунд)||0) &&
+        (Number(новый.бустеров)||0)<(Number(старый.бустеров)||0))));
+}
+function лучшийРезультатКампании(номер){
+  return прочитатьМетрикиКампании().filter(р=>р.победа&&Number(р.уровень)===Number(номер))
+    .sort((а,б)=>лучшеРезультатКампании(а,б)?-1:лучшеРезультатКампании(б,а)?1:0)[0]||null;
+}
+function показатьИтогКампании(элемент,исход){
+  const м=исход?.метрики;
+  элемент.replaceChildren();
+  элемент.classList.add("итог-боя");
+  элемент.classList.toggle("итог-боя-поражение",!исход.победа);
+  const заголовок=document.createElement("div");
+  заголовок.className="итог-боя-заголовок";
+  заголовок.textContent=исход.победа ?
+    (кампанияЗавершена ? (РЕЖИМ_КАЛИБРОВКИ ? "Контрольный проход завершён" : "Кампания завершена") :
+      "Уровень "+исход.уровень+" пройден") : "Попытка завершена";
+  элемент.appendChild(заголовок);
+  if(м){
+    const метрики=document.createElement("div");
+    метрики.className="итог-боя-метрики";
+    [[м.секунд+"с","время"],[м.поворотов,"повороты"],[м.бустеров||0,"бустеры"]].forEach(([значение,подпись])=>{
+      const карточка=document.createElement("div"); карточка.className="итог-боя-метрика";
+      const число=document.createElement("b"), текст=document.createElement("span");
+      число.textContent=значение; текст.textContent=подпись; карточка.append(число,текст); метрики.appendChild(карточка);
+    });
+    элемент.appendChild(метрики);
+    const подпись=document.createElement("div");
+    подпись.className="итог-боя-рекорд"+(исход.новыйРекорд?"":" обычный");
+    if(!исход.победа) подпись.textContent="Осталось целей: "+(м.осталось||0);
+    else if(!исход.былРезультат) подпись.textContent="Первый результат уровня";
+    else if(исход.новыйРекорд) подпись.textContent="Новый личный рекорд";
+    else подпись.textContent="Лучший: "+исход.лучший.поворотов+" пов. · "+исход.лучший.секунд+"с";
+    элемент.appendChild(подпись);
+  }
+  элемент.classList.add("on");
+}
 function отчётСтатистикиКампании(){
   const история=прочитатьМетрикиКампании();
   const поУровням={};
@@ -8139,13 +8189,9 @@ function показатьГлавноеМеню(){
     кнопка.textContent=последнийРезультатЕжедневного ? "Повторить задачу" : "Начать задачу";
   }else if(РЕЖИМ_КАМПАНИИ){
     обновитьМенюКампании();
-    результат.classList.remove("серия");
+    результат.classList.remove("серия","итог-боя","итог-боя-поражение");
     if(последнийИсходКампании){
-      результат.textContent=последнийИсходКампании.победа ?
-        (кампанияЗавершена ? (РЕЖИМ_КАЛИБРОВКИ ? "Уровни 1–12 пройдены · результаты готовы" : "Все 20 уровней пройдены") :
-          "Уровень "+последнийИсходКампании.уровень+" пройден") :
-        "Попробуйте другой порядок зарядов и ракурс";
-      результат.classList.add("on");
+      показатьИтогКампании(результат,последнийИсходКампании);
     }else if(естьВосстановленныйБой){
       const осталось=ожидающийСнимокБоя?.cubes?.filter(к=>к.alive).length ?? сл().length;
       результат.textContent="Бой сохранён · осталось кубиков "+осталось;
@@ -8277,10 +8323,13 @@ function финал(победа){
   // Победа — энергетический выдох без мелодии уведомления;
   // поражение — спокойный нисходящий сигнал без резкого гудка.
   if(победа) ЗВУК.победа(); else ЗВУК.поражение();
-  завершитьМетрикиБоя(победа);
+  const прежнийЛучший=РЕЖИМ_КАМПАНИИ&&победа ? лучшийРезультатКампании(уровень) : null;
+  const итогБоя=завершитьМетрикиБоя(победа);
   if(РЕЖИМ_PLAYTEST && победа && тестовыйБой<3) тестовыйБой++;
   if(РЕЖИМ_КАМПАНИИ){
-    последнийИсходКампании={победа:!!победа,уровень};
+    последнийИсходКампании={победа:!!победа,уровень,метрики:итогБоя,
+      былРезультат:!!прежнийЛучший,лучший:прежнийЛучший,
+      новыйРекорд:!!победа&&!!прежнийЛучший&&лучшеРезультатКампании(итогБоя,прежнийЛучший)};
     if(победа) максимумПройден=Math.max(максимумПройден,уровень);
     if(победа && уровень<ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА) уровень++;
     else if(победа) кампанияЗавершена=true;
