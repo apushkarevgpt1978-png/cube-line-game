@@ -851,6 +851,13 @@ body{display:grid; place-items:start center;
 .испытание-hud{margin-left:8px;color:#ffe27a;font-variant-numeric:tabular-nums}
 .испытание-hud[hidden]{display:none}
 .меню-выбор-уровня{display:flex;align-items:center;justify-content:center;gap:7px}
+.меню-кошелёк{
+  display:flex;align-items:center;gap:4px;min-width:48px;padding:5px 8px;border-radius:999px;
+  color:#fff1a8;background:rgba(2,12,38,.78);border:1px solid rgba(255,215,94,.55);
+  box-shadow:0 0 14px rgba(255,190,54,.18);font-size:11px;font-variant-numeric:tabular-nums
+}
+.меню-кошелёк i{font-style:normal;color:#65eaff;text-shadow:0 0 8px #42d8ff}
+.меню-кошелёк[hidden]{display:none}
 .меню-уровень{
   min-width:122px;text-align:center;
   padding:4px 12px; border-radius:999px;
@@ -928,6 +935,46 @@ body{display:grid; place-items:start center;
 }
 .меню-мини svg{width:21px;height:21px}.меню-мини.выкл .волны{opacity:.18}
 .меню-мини:active{transform:scale(.94)}
+.магазин-диалог{padding:16px!important}
+.магазин-шапка{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.магазин-шапка h2{margin:0;color:#f6fcff;font-size:20px}
+.магазин-шапка p{margin:3px 0 0;color:#89c9e8;font-size:10px;line-height:1.35}
+.магазин-баланс{flex:none;padding:6px 9px;border-radius:999px;color:#fff1a8;background:#081c47;
+  border:1px solid rgba(255,215,94,.55);font-size:12px;font-weight:700}
+.магазин-баланс i{font-style:normal;color:#65eaff}
+.магазин-подготовка{margin-top:12px;padding:9px;border-radius:13px;background:rgba(1,11,35,.46);
+  border:1px solid rgba(112,226,255,.2)}
+.магазин-подготовка-верх{display:flex;justify-content:space-between;color:#8edfff;font-size:9px;
+  letter-spacing:.09em;text-transform:uppercase}
+.магазин-слоты{display:flex;gap:7px;margin-top:7px;min-height:39px}
+.магазин-пусто{display:grid;place-items:center;flex:1;color:#6386a7;font-size:10px}
+.магазин-выбран{
+  flex:1;min-width:0;display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:10px;
+  border:1px solid rgba(129,232,255,.42);color:#fff;background:rgba(22,78,145,.62);cursor:pointer
+}
+.магазин-выбран .зн{width:23px;height:23px;fill:#fff;flex:none}
+.магазин-выбран span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;font-weight:700}
+.магазин-выбран b{margin-left:auto;color:#ffb8c4;font-size:14px}
+.магазин-сетка{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.магазин-товар{
+  position:relative;min-height:59px;display:grid;grid-template-columns:38px 1fr;align-items:center;gap:7px;
+  padding:7px;text-align:left;border-radius:12px;border:1px solid rgba(112,226,255,.3);
+  color:#eefaff;background:linear-gradient(145deg,rgba(25,78,144,.84),rgba(7,27,69,.94));cursor:pointer
+}
+.магазин-товар.рекомендован{border-color:#ffd55e;box-shadow:0 0 12px rgba(255,195,49,.18)}
+.магазин-товар:disabled{cursor:default;opacity:.42;filter:saturate(.45)}
+.магазин-иконка{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;
+  background:rgba(56,180,229,.28);box-shadow:inset 0 1px rgba(255,255,255,.2)}
+.магазин-иконка .зн{width:25px;height:25px;fill:#fff}
+.магазин-имя{display:block;font-size:10px;font-weight:700;line-height:1.15}
+.магазин-цена{display:block;margin-top:4px;color:#fff0a1;font-size:10px;font-weight:700}
+.магазин-цена i{font-style:normal;color:#65eaff}
+.магазин-метка{position:absolute;right:6px;top:5px;color:#ffe16e;font-size:6px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase}
+.магазин-закрыть{width:100%;margin-top:11px;min-height:38px;border:1px solid #9ae9ff;border-radius:11px;
+  color:#fff;background:linear-gradient(180deg,#239bd7,#1260a9);font:700 11px/1 inherit;cursor:pointer}
+.итог-боя-награда{margin-top:7px;color:#fff1a8;font-size:10px;font-weight:700}
+.итог-боя-награда i{font-style:normal;color:#65eaff}
 @keyframes дыханиеКнопки{
   0%,100%{filter:brightness(1);transform:translateY(0)}
   50%{filter:brightness(1.08);transform:translateY(-2px)}
@@ -936,6 +983,7 @@ body{display:grid; place-items:start center;
   .меню-верх{top:17px}.меню-логотип{font-size:34px}.меню-слоган{font-size:11px}
   .меню-низ{bottom:17px;gap:7px}.меню-играть{min-height:57px}
   .меню-режим{padding:5px 10px}
+  .магазин-товар{min-height:52px}.магазин-сетка{gap:5px}.магазин-подготовка{margin-top:8px}
 }
 @media (prefers-reduced-motion:reduce){.меню-играть{animation:none}}
 
@@ -1565,6 +1613,7 @@ body{display:grid; place-items:start center;
         <button class="меню-уровень-стрелка" id="menuPrevLevel" type="button" aria-label="Предыдущий уровень" hidden>‹</button>
         <div class="меню-уровень" id="menuLevel">Уровень 1</div>
         <button class="меню-уровень-стрелка" id="menuNextLevel" type="button" aria-label="Следующий уровень" hidden>›</button>
+        <div class="меню-кошелёк" id="menuWallet" title="Кристаллы"><i>◆</i><b id="menuCrystals">0</b></div>
       </div>
       <div class="меню-результат" id="menuResult" aria-live="polite"></div>
       <button class="меню-играть" id="menuPlay" type="button">
@@ -1575,6 +1624,9 @@ body{display:grid; place-items:start center;
         <button class="меню-мини" id="menuSound" type="button" title="Звук">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4z" fill="currentColor"/><path class="волны" d="M15.4 9.2a4 4 0 0 1 0 5.6M18 6.6a7.6 7.6 0 0 1 0 10.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
         </button>
+        <button class="меню-мини" id="menuShop" type="button" title="Магазин бустеров" aria-label="Магазин бустеров">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 19 8.5 16.4 20H7.6L5 8.5z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m5 8.5 7 4 7-4M12 12.5V20" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+        </button>
         <button class="меню-мини" id="menuStats" type="button" title="Статистика прохождений" aria-label="Статистика прохождений">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V11M12 19V5M19 19V8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M3.5 19.5h17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".65"/></svg>
         </button>
@@ -1582,6 +1634,21 @@ body{display:grid; place-items:start center;
       </div>
     </div>
   </section>
+
+  <div class="overlay" id="shop" aria-hidden="true">
+    <div class="dialog магазин-диалог" role="dialog" aria-modal="true" aria-labelledby="shopTitle">
+      <div class="магазин-шапка">
+        <div><h2 id="shopTitle">Подготовка к бою</h2><p>Побеждайте, получайте кристаллы и выбирайте до двух усилений.</p></div>
+        <div class="магазин-баланс"><i>◆</i> <span id="shopCrystals">0</span></div>
+      </div>
+      <div class="магазин-подготовка">
+        <div class="магазин-подготовка-верх"><span>Следующий бой</span><span id="shopLoadoutCount">0/2</span></div>
+        <div class="магазин-слоты" id="shopLoadout"></div>
+      </div>
+      <div class="магазин-сетка" id="shopGrid"></div>
+      <button class="магазин-закрыть" id="shopClose" type="button">Готово</button>
+    </div>
+  </div>
 
   <div class="overlay" id="help" aria-hidden="true">
     <div class="dialog">
@@ -1592,6 +1659,7 @@ body{display:grid; place-items:start center;
         <li>Кубик на пути закрывает выстрел — освобождайте линии.</li>
         <li>Крутите фигуру в любую сторону: сзади другие кубики.</li>
         <li>Разберите её целиком.</li>
+        <li>За победу начисляются кристаллы. Купленные в меню бустеры попадут в следующий бой.</li>
       </ol>
       <button class="btn" id="helpBtn">Понятно</button>
     </div>
@@ -1958,6 +2026,20 @@ const НАЗВАНИЯ_БУСТЕРОВ = {
   пробой:"ПРОБОЙ", радуга:"РАДУГА", двойка:"ИМПУЛЬС",
   разведка:"РАЗВЕДКА", доворот:"ДОВОРОТ", ракета:"РАКЕТА"
 };
+// Кампания больше не раздаёт усиления бесплатно внутри фигуры. Игрок
+// зарабатывает кристаллы победами и перед следующим боем выбирает максимум
+// два бустера. Порядок открытия синхронизирован с появлением препятствий.
+const КАТАЛОГ_БУСТЕРОВ = [
+  {вид:"двойка",имя:"Импульс",цена:3,открытьПосле:1},
+  {вид:"радуга",имя:"Радуга",цена:4,открытьПосле:1},
+  {вид:"мультилазер",имя:"Мультилазер",цена:6,открытьПосле:3},
+  {вид:"пробой",имя:"Пробой",цена:5,открытьПосле:5},
+  {вид:"ракета",имя:"Ракета",цена:8,открытьПосле:7},
+  {вид:"разведка",имя:"Разведка",цена:4,открытьПосле:8},
+  {вид:"доворот",имя:"Доворот",цена:4,открытьПосле:9}
+];
+const ЛИМИТ_ПОДГОТОВКИ = 2;
+function товарБустера(вид){ return КАТАЛОГ_БУСТЕРОВ.find(т=>т.вид===вид)||null; }
 
 const ЦВЕТА = {
   red:0xff2d55, orange:0xff8a1f, green:0x25d366,
@@ -2646,10 +2728,25 @@ let уровень = Number.isFinite(сохранённыйНомер) ? Math.ma
 let последнийИсходКампании = null;
 let кампанияЗавершена = !!сохранениеПриЗапуске?.campaignComplete;
 let максимумПройден = Math.max(0,Math.min(20,Math.floor(Number(сохранениеПриЗапуске?.completed)||0)));
+function наградаПервойПобеды(номер){ return 3+Math.floor((Math.max(1,номер)-1)/4); }
+function стартовыйБалансСтарогоСохранения(){
+  let сумма=0;
+  for(let номер=1;номер<=максимумПройден;номер++) сумма+=наградаПервойПобеды(номер);
+  return сумма;
+}
+const сохранениеУжеСЭкономикой=Number.isFinite(Number(сохранениеПриЗапуске?.crystals));
+let кристаллы=сохранениеУжеСЭкономикой ?
+  Math.max(0,Math.floor(Number(сохранениеПриЗапуске?.crystals)||0)) : стартовыйБалансСтарогоСохранения();
+let наградыПолучены=new Set(Array.isArray(сохранениеПриЗапуске?.rewardedLevels) ?
+  сохранениеПриЗапуске.rewardedLevels.map(Number).filter(н=>н>=1&&н<=20) :
+  Array.from({length:максимумПройден},(_,и)=>и+1));
+let подготовленныеБустеры=(Array.isArray(сохранениеПриЗапуске?.preparedBoosters) ?
+  сохранениеПриЗапуске.preparedBoosters : []).filter(вид=>товарБустера(вид)).slice(0,ЛИМИТ_ПОДГОТОВКИ);
 let ожидающийСнимокБоя = явноЗапрошенУровень ? null : (сохранениеПриЗапуске?.battle || null);
 let естьВосстановленныйБой = false, бойДействительноНачат = false;
 let сохранённоеВремяБоя = 0, таймерСохранения = 0;
 let метрикиБоя = null, последнийРезультатПлейтеста = null, результатыСерии = [];
+let купленныеВТекущемБою=[];
 // Пушки, уничтоженные ответным импульсом «Охотника», не возвращаются до
 // конца текущего боя. Set сбрасывается при создании следующей фигуры.
 let уничтоженныеПушки = new Set(), пушкиПодОтветом = new Set();
@@ -2705,7 +2802,7 @@ function начатьМетрикиБоя(){
     ожидаемыеПовороты:паспортУровня?.difficulty?.expectedRotations || null,
     стартовыхЦелей:паспортУровня?.initialTargets ?? null,
     кубиковВНачале:кубики.length,зарядок:0,бустеров:0,бустерыПоТипу:{},
-    добытоТайников:0,
+    добытоТайников:0,купленныеБустеры:купленныеВТекущемБою.slice(),
     поворотов:0,путьТяги:0,залпов:0,выстрелов:0,попаданийВЩит:0,
     вскрытоБрони:0,разрушено:0,потеряноПушек:0,максПушек:0};
 }
@@ -2827,6 +2924,37 @@ function первыйСвободныйСлот(){
 function бустерРазрешёнВИспытании(вид){
   return !РЕЖИМ_ИСПЫТАНИЯ || !(текущееИспытание().запрещены||[]).includes(вид);
 }
+function режимЭкономики(){
+  return РЕЖИМ_КАМПАНИИ && !РЕЖИМ_КАЛИБРОВКИ;
+}
+function начислитьКристаллыЗаПобеду(номер){
+  if(!режимЭкономики()) return 0;
+  const впервые=!наградыПолучены.has(номер);
+  const награда=впервые ? наградаПервойПобеды(номер) : 1;
+  кристаллы+=награда;
+  наградыПолучены.add(номер);
+  return награда;
+}
+function купитьБустер(вид){
+  const товар=товарБустера(вид);
+  if(!режимЭкономики() || !товар) return {ok:false,причина:"недоступно"};
+  if(максимумПройден<товар.открытьПосле) return {ok:false,причина:"закрыто"};
+  if(подготовленныеБустеры.length>=ЛИМИТ_ПОДГОТОВКИ) return {ok:false,причина:"места"};
+  if(кристаллы<товар.цена) return {ok:false,причина:"кристаллы"};
+  кристаллы-=товар.цена;
+  подготовленныеБустеры.push(вид);
+  записатьСохранение(false);
+  обновитьМагазин();
+  return {ok:true,баланс:кристаллы,подготовлено:подготовленныеБустеры.slice()};
+}
+function вернутьБустерИзПодготовки(индекс){
+  if(индекс<0 || индекс>=подготовленныеБустеры.length) return false;
+  const вид=подготовленныеБустеры.splice(индекс,1)[0];
+  кристаллы+=товарБустера(вид)?.цена||0;
+  записатьСохранение(false);
+  обновитьМагазин();
+  return true;
+}
 function обновитьHudИспытания(){
   const э=$("challengeHud");
   э.hidden=!РЕЖИМ_ИСПЫТАНИЯ;
@@ -2890,6 +3018,8 @@ function записатьСохранение(сБоем=безопасноСо�
     const данные={
       version:ВЕРСИЯ_СОХРАНЕНИЯ,level:уровень,completed:максимумПройден,
       campaignComplete:кампанияЗавершена,
+      crystals:кристаллы,rewardedLevels:[...наградыПолучены].sort((а,б)=>а-б),
+      preparedBoosters:подготовленныеБустеры.slice(0,ЛИМИТ_ПОДГОТОВКИ),
       battle:снимок,
       savedAt:Date.now()
     };
@@ -3508,6 +3638,38 @@ function спрятатьБустерыВФигуре(боезапас){
     к.глубинаБустера = глубина.get(к.id) || 0;
   });
   return выбранные.length;
+}
+
+function создатьКупленныйБустер(вид,цвет,номер){
+  const мультиБонус=1;
+  return {
+    id:"shop-"+текущийSeed+"-"+номер+"-"+вид,
+    color:вид==="радуга" ? "white" : цвет,
+    count:вид==="мультилазер" ? ЗАРЯДЫ_МУЛЬТИЛАЗЕРА*(мультиБонус+1)/2 :
+      вид==="пробой" || вид==="двойка" ? 2 : 1,
+    мультиОсталось:вид==="мультилазер" ? ВРЕМЯ_МУЛЬТИЛАЗЕРА : 0,
+    мультиБонус,бустер:вид,куплен:true
+  };
+}
+
+// Покупка не добавляет лишний обычный боезапас: это отдельная особая фишка.
+// Цвет выбирается среди реально открытых граней, поэтому платный бустер не
+// может начать бой бесполезным из-за случайной масти.
+function загрузитьПодготовленныеБустеры(боезапас,цветаОболочки){
+  купленныеВТекущемБою=[];
+  if(!режимЭкономики() || ожидающийСнимокБоя || !подготовленныеБустеры.length) return [];
+  const цвета=[...цветаОболочки].filter(цвет=>боезапас[цвет]>0)
+    .sort((а,б)=>(боезапас[б]||0)-(боезапас[а]||0));
+  if(!цвета.length) цвета.push(...Object.keys(боезапас).filter(цвет=>боезапас[цвет]>0));
+  const набор=подготовленныеБустеры.splice(0,ЛИМИТ_ПОДГОТОВКИ);
+  набор.forEach((вид,номер)=>{
+    const бустер=создатьКупленныйБустер(вид,цвета[номер%Math.max(1,цвета.length)]||"white",номер);
+    const индексы=колонки.map((кол,индекс)=>({индекс,длина:кол.length}))
+      .sort((а,б)=>а.длина-б.длина||а.индекс-б.индекс);
+    колонки[индексы[0].индекс].unshift(бустер);
+    купленныеВТекущемБою.push(вид);
+  });
+  return купленныеВТекущемБою.slice();
 }
 
 let паспортУровня = null;
@@ -4678,9 +4840,10 @@ function новаяИгра(){
   // сойдётся с фигурой и её будет нечем добить (или останется лишнее).
   const счёт = рассчитатьБоезапас(кубики);
 
-  // Бустеры больше не выдаются готовыми. Они становятся частью фигуры и
-  // появятся в очереди лишь после полного разрушения кубика-тайника.
-  спрятатьБустерыВФигуре(счёт);
+  // В основной кампании бустеры покупаются за кристаллы и загружаются перед
+  // боем. Специальные режимы сохраняют встроенные тайники: их правила и
+  // воспроизводимые испытания не зависят от кошелька кампании.
+  if(!режимЭкономики()) спрятатьБустерыВФигуре(счёт);
   // Защитный узел занимает обычный уже посчитанный кубик. Его дополнительные
   // попадания нельзя заранее красить в цвет самого узла: купол перехватывает
   // лучи по соседним кубикам любых мастей. Поэтому держим их нейтральным
@@ -4728,9 +4891,9 @@ function новаяИгра(){
     const и=к.findIndex(б=>цветаСтартовойОболочки.has(б.color));
     if(и>0) к.unshift(к.splice(и,1)[0]);
   });
+  загрузитьПодготовленныеБустеры(счёт,цветаСтартовойОболочки);
 
-  // Паспорт строится после обычной раздачи и размещения тайников: он
-  // фиксирует не только базовый боезапас, но и добычу внутри фигуры.
+  // Паспорт строится после обычной раздачи и размещения защиты.
   // Паспорт — тяжёлая диагностическая проверка тысяч линий обзора.
   // В публичной кампании он нигде не используется и раньше блокировал
   // переход на следующий уровень. Оставляем его DEV/плейтестам.
@@ -4753,6 +4916,8 @@ function новаяИгра(){
           серия:блицСерия,множитель:блицМножитель,фигур:блицФигур,номер:блицНомерФигуры} : null,
         метрики: метрикиБоя ? {...метрикиБоя,начало:undefined,путьТяги:undefined} : null,
         обучение:{этап:этапОбучения,путь:путьОбучения,тянем,указателей:активныеУказатели.size},
+        экономика:{кристаллы,подготовлено:подготовленныеБустеры.slice(),
+          загружено:купленныеВТекущемБою.slice(),награды:[...наградыПолучены]},
         тайников: кубики.filter(к => к.бустерВнутри).length,
         бустеровВОчереди: колонки.flat().filter(б => б.бустер).length,
         обнаружено: кубики.filter(к => к.жив && к.бустерВнутри && к.тайникОбнаружен).length,
@@ -4789,6 +4954,12 @@ function новаяИгра(){
       камера: () => ({масштаб:масштабКамеры,цель:целевойМасштабКамеры,z:камера.position.z}),
       нормализацияФорм: цель => таблицаНормализацииФорм(цель),
       планФорм: () => планФормКампании(),
+      датьКристаллы: количество => {
+        кристаллы+=Math.max(0,Math.floor(Number(количество)||0));
+        обновитьМагазин();
+        return кристаллы;
+      },
+      купить: вид => купитьБустер(вид),
       открытьПервый: () => {
         const тайник = кубики.find(к => к.жив && к.бустерВнутри && !к.тайникОбнаружен);
         if(!тайник) return null;
@@ -7909,6 +8080,12 @@ function показатьИтогКампании(элемент,исход){
     else if(исход.новыйРекорд) подпись.textContent="Новый личный рекорд";
     else подпись.textContent="Лучший: "+исход.лучший.поворотов+" пов. · "+исход.лучший.секунд+"с";
     элемент.appendChild(подпись);
+    if(исход.победа && исход.награда){
+      const награда=document.createElement("div");
+      награда.className="итог-боя-награда";
+      награда.innerHTML="+"+исход.награда+" <i>◆</i> · баланс "+исход.баланс;
+      элемент.appendChild(награда);
+    }
   }
   элемент.classList.add("on");
 }
@@ -8113,11 +8290,60 @@ function выбратьИспытание(сдвиг){
   ЗВУК.тап();
 }
 
+function закрытьМагазин(){
+  const окно=$("shop");
+  окно.classList.remove("on"); окно.setAttribute("aria-hidden","true");
+}
+function обновитьМагазин(){
+  const доступен=режимЭкономики();
+  $("menuWallet").hidden=!доступен;
+  $("menuShop").hidden=!доступен;
+  $("menuCrystals").textContent=кристаллы;
+  $("shopCrystals").textContent=кристаллы;
+  if(!доступен){ закрытьМагазин(); return; }
+  $("shopLoadoutCount").textContent=подготовленныеБустеры.length+"/"+ЛИМИТ_ПОДГОТОВКИ;
+  const слотыМагазина=$("shopLoadout");
+  слотыМагазина.replaceChildren();
+  if(!подготовленныеБустеры.length){
+    const пусто=document.createElement("div"); пусто.className="магазин-пусто";
+    пусто.textContent="Усиления не выбраны"; слотыМагазина.appendChild(пусто);
+  }else подготовленныеБустеры.forEach((вид,индекс)=>{
+    const товар=товарБустера(вид), кнопка=document.createElement("button");
+    кнопка.type="button"; кнопка.className="магазин-выбран б-"+вид;
+    кнопка.title="Убрать и вернуть "+товар.цена+" кристалла";
+    кнопка.innerHTML=(ЗНАЧКИ[вид]||"")+"<span>"+товар.имя+"</span><b>×</b>";
+    кнопка.addEventListener("click",()=>{ ЗВУК.тап(); вернутьБустерИзПодготовки(индекс); });
+    слотыМагазина.appendChild(кнопка);
+  });
+  const сетка=$("shopGrid"), рекомендации=new Set(сценарийКампании(уровень)?.бустеры||[]);
+  сетка.replaceChildren();
+  КАТАЛОГ_БУСТЕРОВ.forEach(товар=>{
+    const открыт=максимумПройден>=товар.открытьПосле;
+    const кнопка=document.createElement("button");
+    кнопка.type="button";
+    кнопка.className="магазин-товар б-"+товар.вид+(рекомендации.has(товар.вид)?" рекомендован":"");
+    кнопка.disabled=!открыт || кристаллы<товар.цена || подготовленныеБустеры.length>=ЛИМИТ_ПОДГОТОВКИ;
+    кнопка.title=открыт ? ПОДПИСИ_БУСТЕРОВ[товар.вид] : "Откроется после уровня "+товар.открытьПосле;
+    кнопка.innerHTML='<span class="магазин-иконка">'+ЗНАЧКИ[товар.вид]+'</span><span>'+
+      '<b class="магазин-имя">'+товар.имя+'</b>'+
+      '<small class="магазин-цена">'+(открыт?'<i>◆</i> '+товар.цена:'после ур. '+товар.открытьПосле)+'</small></span>'+
+      (рекомендации.has(товар.вид)?'<em class="магазин-метка">совет</em>':'');
+    кнопка.addEventListener("click",()=>{ const результат=купитьБустер(товар.вид); if(результат.ok) ЗВУК.тап(); });
+    сетка.appendChild(кнопка);
+  });
+}
+function показатьМагазин(){
+  if(!режимЭкономики()) return;
+  закрытьСтатистику(); закрытьСправку(); обновитьМагазин(); ЗВУК.тап();
+  $("shop").classList.add("on"); $("shop").setAttribute("aria-hidden","false");
+}
+
 function показатьГлавноеМеню(){
   // Главное меню — самостоятельный экран. Ни один диалог или карточка
   // обучения не должен оставаться поверх него после завершения/паузы боя.
   закрытьСтатистику();
   закрытьСправку();
+  закрытьМагазин();
   const подсказка=$("tutorialTip");
   подсказка.classList.remove("on");
   подсказка.setAttribute("aria-hidden","true");
@@ -8235,6 +8461,7 @@ function показатьГлавноеМеню(){
   меню.classList.remove("уходит");
   меню.classList.add("on");
   меню.setAttribute("aria-hidden","false");
+  обновитьМагазин();
   if(РЕЖИМ_КАЛИБРОВКИ && кампанияЗавершена)
     setTimeout(()=>{ if($("mainMenu").classList.contains("on")) показатьСтатистикуКампании(); },320);
 }
@@ -8346,12 +8573,15 @@ function финал(победа){
   // поражение — спокойный нисходящий сигнал без резкого гудка.
   if(победа) ЗВУК.победа(); else ЗВУК.поражение();
   const прежнийЛучший=РЕЖИМ_КАМПАНИИ&&победа ? лучшийРезультатКампании(уровень) : null;
+  const награда=РЕЖИМ_КАМПАНИИ&&победа ? начислитьКристаллыЗаПобеду(уровень) : 0;
+  if(метрикиБоя){ метрикиБоя.наградаКристаллов=награда; метрикиБоя.балансКристаллов=кристаллы; }
   const итогБоя=завершитьМетрикиБоя(победа);
   if(РЕЖИМ_PLAYTEST && победа && тестовыйБой<3) тестовыйБой++;
   if(РЕЖИМ_КАМПАНИИ){
     последнийИсходКампании={победа:!!победа,уровень,метрики:итогБоя,
       былРезультат:!!прежнийЛучший,лучший:прежнийЛучший,
-      новыйРекорд:!!победа&&!!прежнийЛучший&&лучшеРезультатКампании(итогБоя,прежнийЛучший)};
+      новыйРекорд:!!победа&&!!прежнийЛучший&&лучшеРезультатКампании(итогБоя,прежнийЛучший),
+      награда,баланс:кристаллы};
     if(победа) максимумПройден=Math.max(максимумПройден,уровень);
     if(победа && уровень<ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА) уровень++;
     else if(победа) кампанияЗавершена=true;
@@ -8634,6 +8864,8 @@ $("menuChallengeMode").addEventListener("click",()=>{
 $("menuPrevLevel").addEventListener("click", ()=>РЕЖИМ_ИСПЫТАНИЯ ? выбратьИспытание(-1) : выбратьУровеньКампании(-1));
 $("menuNextLevel").addEventListener("click", ()=>РЕЖИМ_ИСПЫТАНИЯ ? выбратьИспытание(1) : выбратьУровеньКампании(1));
 $("menuHelp").addEventListener("click", показатьСправку);
+$("menuShop").addEventListener("click", показатьМагазин);
+$("shopClose").addEventListener("click", ()=>{ ЗВУК.тап(); закрытьМагазин(); });
 $("menuStats").addEventListener("click", показатьСтатистикуКампании);
 $("statsCopy").addEventListener("click", скопироватьСтатистикуКампании);
 $("statsClose").addEventListener("click", закрытьСтатистику);
@@ -8646,6 +8878,9 @@ $("stats").addEventListener("click",событие=>{
 });
 $("help").addEventListener("click",событие=>{
   if(событие.target===$("help")) закрытьСправку();
+});
+$("shop").addEventListener("click",событие=>{
+  if(событие.target===$("shop")) закрытьМагазин();
 });
 
 function переключитьЗвук(){
