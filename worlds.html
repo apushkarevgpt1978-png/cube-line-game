@@ -205,7 +205,7 @@ body{display:grid; place-items:start center;
 .обучение-кнопка:active{transform:translateY(3px);box-shadow:inset 0 2px rgba(255,255,255,.3),0 1px 0 #073b81}
 .кубик-реакция{position:absolute;z-index:16;right:11px;top:92px;display:flex;align-items:center;gap:8px;max-width:230px;opacity:0;transform:translateX(18px) scale(.94);transition:opacity .2s ease,transform .26s cubic-bezier(.2,.85,.25,1.15);pointer-events:none}
 .кубик-реакция.on{opacity:1;transform:none}
-.кубик-портрет{flex:none;width:54px;height:54px;border:2px solid #a7f1ff;border-radius:50%;background:#f8f5ef url("../concepts/02-character-sheet.png") 17% 84%/410px auto no-repeat;box-shadow:0 0 18px rgba(54,211,255,.68),inset 0 0 0 2px rgba(8,37,83,.45)}
+.кубик-портрет{flex:none;width:54px;height:54px;border:2px solid #a7f1ff;border-radius:50%;background:#f8f5ef url("02-character-sheet.png") 17% 84%/410px auto no-repeat;box-shadow:0 0 18px rgba(54,211,255,.68),inset 0 0 0 2px rgba(8,37,83,.45)}
 .кубик-реакция[data-kind="добыча"] .кубик-портрет,.кубик-реакция[data-kind="готово"] .кубик-портрет{background-position:50% 84%}
 .кубик-реакция[data-kind="нет-цели"] .кубик-портрет{background-position:83% 84%}
 .кубик-реплика{position:relative;padding:9px 11px;border:1px solid rgba(132,231,255,.66);border-radius:13px;color:#f1fbff;background:rgba(3,18,52,.94);box-shadow:0 8px 22px rgba(0,5,28,.55),0 0 15px rgba(49,190,255,.17);font-size:12px;font-weight:600;line-height:1.3;text-align:left}
@@ -986,7 +986,7 @@ body{display:grid; place-items:start center;
   margin-top:8px;padding:6px;border-radius:11px;text-align:left;color:#eafaff;
   background:rgba(18,76,139,.48);border:1px solid rgba(113,229,255,.42)}
 .экономика-совет-портрет{width:33px;height:33px;border-radius:50%;border:1px solid #a7f1ff;
-  background:#f8f5ef url("../concepts/02-character-sheet.png") 50% 84%/250px auto no-repeat;
+  background:#f8f5ef url("02-character-sheet.png") 50% 84%/250px auto no-repeat;
   box-shadow:0 0 11px rgba(54,211,255,.5)}
 .экономика-совет-текст b{display:block;color:#79eaff;font-size:7px;letter-spacing:.12em}
 .экономика-совет-текст span{display:block;margin-top:2px;font-size:8px;line-height:1.25}
@@ -1069,9 +1069,31 @@ body{display:grid; place-items:start center;
    обозначает режим, текущую миссию и одну центральную точку действия. */
 .меню-верх{left:18px;right:18px;top:max(14px,env(safe-area-inset-top))}
 .меню-бренд-ряд{justify-content:flex-start}.меню-марка{display:none}.меню-логотип{font-size:21px;letter-spacing:.035em}
-.меню-режимы{margin-top:11px;background:rgba(2,12,38,.26);border-bottom-color:rgba(134,222,255,.18)}
+
+/* ⭐ РЕЖИМЫ — СПИСКОМ СЛЕВА, у плеча робота (решение 24.09).
+   Были строкой под логотипом: четыре колонки в одну линию, подписи
+   мелкие и жались друг к другу. Столбцом читаются сразу, а середина
+   экрана освобождается под фигуру и кнопку пуска. */
+.меню-режимы{position:absolute;left:0;top:62px;width:min(132px,38vw);
+  margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:6px;
+  background:none;border:0}
+.меню-режим{position:relative;padding:9px 11px;border:1px solid rgba(124,214,255,.3);border-radius:11px;
+  color:#bfe6ff;font-size:9px;letter-spacing:.1em;text-align:left;
+  background:linear-gradient(140deg,rgba(6,28,66,.72),rgba(3,16,44,.58));
+  box-shadow:inset 0 1px 0 rgba(170,240,255,.16),0 4px 14px rgba(0,8,30,.5);
+  backdrop-filter:blur(7px);transition:border-color .18s,color .18s,transform .12s}
+.меню-режим::after{content:"";position:absolute;left:0;top:11px;bottom:11px;width:2px;border-radius:2px;
+  background:transparent;transition:background .18s,box-shadow .18s}
+.меню-режим[aria-pressed="true"]{color:#eafbff;border-color:rgba(160,243,255,.85);
+  background:linear-gradient(140deg,rgba(18,88,160,.82),rgba(6,38,92,.7));
+  box-shadow:inset 0 1px 0 rgba(200,248,255,.3),0 0 18px rgba(52,204,255,.4),0 5px 16px rgba(0,8,30,.55)}
+.меню-режим[aria-pressed="true"]::after{background:#7df0ff;box-shadow:0 0 10px rgba(125,240,255,.9)}
+.меню-режим:active{transform:scale(.97)}
+
 .меню-низ{inset:104px 16px max(13px,calc(8px + env(safe-area-inset-bottom)));display:block}
-.меню-миссия{position:absolute;left:0;right:0;top:47%;transform:translateY(-50%);width:auto;padding:0;border:0;border-radius:0;
+/* ⭐ Миссия и кнопка — ВЫШЕ и по центру: раньше стояли на 47%, кнопка
+   налезала на робота. 34% ставит её над лучами, по оси фигуры. */
+.меню-миссия{position:absolute;left:0;right:0;top:34%;transform:translateY(-50%);width:auto;padding:0;border:0;border-radius:0;
   display:flex;flex-direction:column;align-items:center;background:none;box-shadow:none;backdrop-filter:none}
 .меню-миссия-шапка{display:block;margin:0 0 4px;text-align:center}.меню-миссия-метка{display:none}
 .меню-мир{max-width:none;color:#8fdcf1;font-size:7px;letter-spacing:.14em;text-align:center;text-shadow:0 2px 10px #00102e}
@@ -1083,22 +1105,340 @@ body{display:grid; place-items:start center;
 .меню-результат.серия,.меню-результат.итог-боя{width:min(330px,90vw);padding:8px 9px;border-radius:13px;
   background:rgba(2,13,40,.62);backdrop-filter:blur(8px)}
 .меню-результат .итог-боя-метрика{border:0;background:none}.меню-результат .серия-строка{background:rgba(28,89,148,.14)}
-.меню-играть{order:3;width:132px;height:132px;min-height:132px;margin:12px 0 0;padding:18px;border:3px solid #a6f3ff;border-radius:50%;
-  flex-direction:column;gap:5px;font-size:14px;line-height:1.05;text-align:center;letter-spacing:.06em;
-  background:radial-gradient(circle at 50% 38%,#39dfff 0,#138bd9 47%,#0751a8 78%);
-  box-shadow:inset 0 0 0 7px rgba(4,34,82,.45),inset 0 0 0 10px rgba(137,240,255,.35),0 0 0 8px rgba(35,172,237,.18),
-    0 0 28px rgba(50,216,255,.72),0 12px 32px rgba(0,7,35,.52)}
-.меню-играть::before,.меню-играть::after{top:auto;bottom:16px;width:5px;height:5px}.меню-играть::before{left:28px}.меню-играть::after{right:28px}
-.меню-играть svg{width:24px;height:24px}.меню-играть:active{transform:scale(.94);box-shadow:inset 0 0 0 8px rgba(4,34,82,.48),0 0 18px rgba(50,216,255,.7)}
+/* ⭐ «К БОЮ» — пусковая кнопка. Шестиугольник вместо круга: та же форма,
+   что у граней кубиков на арене, и рифмуется с гранёными плитками. */
+.меню-играть{order:3;width:124px;height:140px;min-height:140px;margin:14px 0 0;padding:16px 10px;
+  border:0;border-radius:0;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  flex-direction:column;gap:6px;font-size:15px;font-weight:800;line-height:1.05;
+  text-align:center;letter-spacing:.1em;text-transform:uppercase;color:#f2fdff;
+  text-shadow:0 0 12px rgba(125,240,255,.85),0 2px 4px rgba(0,10,40,.8);
+  background:
+    linear-gradient(160deg,rgba(150,245,255,.5) 0,transparent 42%),
+    radial-gradient(circle at 50% 34%,#4ce6ff 0,#1592e0 44%,#0a4fa8 74%,#062f74 100%);
+  box-shadow:0 0 34px rgba(60,220,255,.6),0 14px 34px rgba(0,7,35,.6);
+  filter:drop-shadow(0 0 2px rgba(160,245,255,.9));
+  animation:пульс-пуска 2.6s ease-in-out infinite}
+/* грань-подсветка по контуру: рисуем вторым слоем внутри той же фигуры */
+.меню-играть::before{content:"";position:absolute;inset:3px;left:3px;right:3px;top:3px;bottom:3px;
+  width:auto;height:auto;border-radius:0;background:transparent;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  box-shadow:inset 0 0 0 2px rgba(180,250,255,.55),inset 0 0 22px rgba(90,225,255,.35);
+  pointer-events:none}
+.меню-играть::after{content:none}
+.меню-играть svg{width:22px;height:22px;filter:drop-shadow(0 0 6px rgba(140,240,255,.9))}
+.меню-играть:active{transform:scale(.95);animation:none;
+  box-shadow:0 0 18px rgba(60,220,255,.5),0 6px 18px rgba(0,7,35,.6)}
+@keyframes пульс-пуска{
+  0%,100%{box-shadow:0 0 30px rgba(60,220,255,.52),0 14px 34px rgba(0,7,35,.6)}
+  50%    {box-shadow:0 0 46px rgba(78,232,255,.78),0 14px 34px rgba(0,7,35,.6)}
+}
+
 .меню-подвал{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px}
-.меню-кнопки{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
-.меню-мини{height:46px;padding:4px 1px 2px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;color:#ccefff}
+.меню-кнопки{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+/* ⭐ Значки — та же гранёная семья, что кнопка пуска и режимы:
+   срезанные углы, стеклянная подложка, бирюзовый контур. */
+.меню-мини{height:50px;padding:6px 2px 4px;border:1px solid rgba(124,214,255,.26);border-radius:0;
+  clip-path:polygon(0 22%,14% 0,86% 0,100% 22%,100% 78%,86% 100%,14% 100%,0 78%);
+  color:#ccefff;
+  background:linear-gradient(150deg,rgba(6,28,66,.6),rgba(3,16,44,.46));
+  box-shadow:inset 0 1px 0 rgba(170,240,255,.14);backdrop-filter:blur(6px);
+  transition:color .18s,transform .12s}
+.меню-мини:active{transform:scale(.95);color:#eafbff}
 .меню-мини svg{width:18px;height:18px}.меню-мини-подпись{color:#90b8d0;font-size:5.5px}
 .меню-кошелёк{height:40px;min-width:58px;padding:6px 9px;border-radius:20px;background:rgba(3,20,51,.5);border-color:rgba(119,222,255,.28);
   backdrop-filter:blur(7px);box-shadow:0 0 14px rgba(44,190,255,.12)}
 @media (max-height:700px){
-  .меню-низ{inset:88px 14px 8px}.меню-миссия{top:45%}.меню-играть{width:112px;height:112px;min-height:112px;margin-top:7px;font-size:12px}
-  .меню-результат{margin-top:8px}.меню-подвал{gap:5px}.меню-мини{height:40px}.меню-кошелёк{height:36px}.меню-режим{padding-top:7px;padding-bottom:8px}
+  .меню-низ{inset:88px 14px 8px}.меню-миссия{top:32%}
+  .меню-играть{width:108px;height:122px;min-height:122px;margin-top:9px;font-size:13px}
+  .меню-результат{margin-top:8px}.меню-подвал{gap:5px}.меню-мини{height:44px}.меню-кошелёк{height:36px}
+  .меню-режимы{top:56px;gap:5px}.меню-режим{padding:7px 9px;font-size:8.5px}
+}
+
+@media (max-width:0px){
+/* Отклонённый вариант «ОРБИТАЛЬНЫЙ ИНТЕРФЕЙС» оставлен временно только
+   для сравнения; на экране он больше не применяется. */
+   Финальная композиция строится поверх арта без общих панелей и карточек.
+   Визуальный язык один: тонкое кольцо, световой узел и короткая подпись. */
+.меню-тень{
+  background:
+    radial-gradient(circle at 50% 45%,rgba(2,18,50,.62) 0,rgba(2,18,50,.22) 45%,transparent 70%),
+    linear-gradient(180deg,rgba(2,12,35,.34) 0,transparent 24%,transparent 74%,rgba(2,10,30,.72) 100%)
+}
+.меню-верх{left:20px;right:16px;top:max(20px,env(safe-area-inset-top));filter:drop-shadow(0 3px 12px rgba(0,5,25,.9))}
+.меню-бренд-ряд{justify-content:space-between}.меню-марка{display:none}
+.меню-логотип{margin:0;font-size:26px;font-weight:700;letter-spacing:.02em;text-shadow:0 0 18px rgba(61,204,255,.72)}
+
+/* Режимы читаются как навигационная шкала станции, а не как вкладки сайта. */
+.меню-режимы{
+  position:absolute;left:0;top:56px;width:136px;margin:0;padding:3px 0;
+  display:flex;flex-direction:column;align-items:stretch;gap:0;
+  border:0;border-radius:0;background:radial-gradient(ellipse at 20% 50%,rgba(3,17,46,.74),transparent 74%);
+  box-shadow:none;backdrop-filter:none
+}
+.меню-режим{
+  position:relative;width:136px;min-width:0;height:40px;padding:0 4px 0 26px;
+  display:flex;align-items:center;border:0;border-radius:999px;clip-path:none;
+  color:rgba(202,227,242,.74);background:transparent;box-shadow:none;backdrop-filter:none;
+  font-size:14px;font-weight:700;letter-spacing:0;text-align:left;text-transform:none;white-space:nowrap
+}
+.меню-режим::before{
+  content:"";position:absolute;left:7px;top:50%;width:8px;height:8px;margin-top:-4px;
+  border:1px solid rgba(126,229,255,.72);border-radius:50%;background:rgba(7,31,67,.9);
+  box-shadow:0 0 7px rgba(61,211,255,.42)
+}
+.меню-режим::after{content:"";position:absolute;left:18px;top:50%;right:auto;bottom:auto;width:0;height:1px;border-radius:0;background:transparent;box-shadow:none;transition:width .18s ease}
+.меню-режим[aria-pressed="true"]{
+  color:#fff;border:0;background:transparent;
+  box-shadow:none;text-shadow:0 0 9px rgba(102,225,255,.75)
+}
+.меню-режим[aria-pressed="true"]::before{background:#6eeaff;border-color:#d8fbff;box-shadow:0 0 5px #fff,0 0 13px #35d7ff}
+.меню-режим[aria-pressed="true"]::after{width:24px;background:linear-gradient(90deg,rgba(78,221,255,.86),transparent)}
+
+.меню-низ{position:absolute;inset:0;display:block;pointer-events:none}
+.меню-миссия{
+  position:absolute;left:50%;right:auto;top:46%;transform:translate(-50%,-50%);width:min(350px,90vw);padding:0;
+  display:flex;flex-direction:column;align-items:center;border:0;border-radius:0;clip-path:none;
+  background:none;box-shadow:none;backdrop-filter:none;pointer-events:auto
+}
+.меню-миссия-шапка{display:block;margin:0 0 2px;text-align:center}.меню-миссия-метка{display:none}
+.меню-мир{max-width:none;margin:0;padding:0;border:0;border-radius:0;color:#85dff8;background:none;box-shadow:none;
+  font-size:11px;line-height:14px;font-weight:700;letter-spacing:.14em;text-align:center;text-shadow:0 2px 10px #00102e;backdrop-filter:none}
+.меню-выбор-уровня{width:min(350px,90vw);display:grid;grid-template-columns:42px 1fr 42px;gap:8px;min-height:42px}
+.меню-уровень{min-width:0;padding:3px 5px;border:0;border-radius:0;color:#f1fbff;background:none;box-shadow:none;
+  font-size:20px;font-weight:800;line-height:25px;letter-spacing:0;text-transform:none;text-shadow:0 2px 12px #00102e,0 0 9px rgba(0,13,42,.95);backdrop-filter:none}
+.меню-уровень-стрелка{width:42px;height:42px;border:1px solid rgba(126,227,255,.62);border-radius:50%;color:#e8fbff;
+  background:radial-gradient(circle,rgba(21,102,162,.72),rgba(3,25,62,.72));box-shadow:inset 0 0 0 3px rgba(56,183,233,.1),0 0 12px rgba(57,210,255,.2);backdrop-filter:blur(5px)}
+.меню-результат{order:4;width:min(294px,82vw);margin:12px 0 0;padding:7px 11px;border:1px solid rgba(119,224,255,.2);border-radius:999px;
+  color:#cae5f3;background:rgba(2,15,43,.52);box-shadow:0 0 16px rgba(46,192,255,.1);text-shadow:0 2px 10px #00102e;font-size:8px;backdrop-filter:blur(6px)}
+.меню-результат.серия,.меню-результат.итог-боя{width:min(330px,90vw);border-radius:15px;padding:8px 9px;background:rgba(2,13,40,.72)}
+.меню-результат .итог-боя-метрика{border:0;background:none}.меню-результат .серия-строка{background:rgba(28,89,148,.14)}
+
+@keyframes орбитаКнопки{to{transform:rotate(360deg)}}
+.меню-играть{
+  order:3;width:116px;height:116px;min-height:116px;margin:12px 0 0;padding:13px;border:1px solid rgba(121,237,255,.9);border-radius:50%;clip-path:none;
+  flex-direction:column;gap:6px;color:#fff;font-size:24px;font-weight:800;line-height:1;letter-spacing:.02em;
+  background:radial-gradient(circle at 50% 38%,rgba(25,191,242,.9),rgba(7,95,166,.94) 54%,rgba(2,31,76,.96) 100%);
+  box-shadow:inset 0 0 0 5px rgba(114,229,255,.16),inset 0 0 25px rgba(168,247,255,.2),0 0 0 7px rgba(25,148,210,.13),
+    0 0 30px rgba(46,214,255,.57),0 14px 31px rgba(0,7,35,.5);filter:none;animation:none
+}
+.меню-играть::before{
+  content:"";position:absolute;inset:-16px;left:-16px;right:-16px;top:-16px;bottom:-16px;width:auto;height:auto;margin:0;
+  border:1px solid rgba(110,231,255,.58);border-left-color:transparent;border-radius:50%;clip-path:none;
+  background:none;box-shadow:0 0 12px rgba(57,210,255,.2);animation:орбитаКнопки 8s linear infinite
+}
+.меню-играть::after{
+  content:"";position:absolute;inset:7px;left:7px;right:7px;top:7px;bottom:7px;width:auto;height:auto;margin:0;
+  border:1px solid rgba(209,251,255,.22);border-radius:50%;background:none;box-shadow:none
+}
+.меню-играть svg{position:relative;z-index:1;width:26px;height:26px;filter:drop-shadow(0 0 7px rgba(221,251,255,.88))}
+.меню-играть:active{transform:scale(.94);box-shadow:inset 0 0 0 5px rgba(114,229,255,.2),0 0 19px rgba(50,216,255,.68)}
+.меню-играть-надпись{position:relative;z-index:1}.меню-играть-динамика{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+.меню-подвал{
+  position:absolute;left:18px;right:18px;bottom:max(28px,calc(18px + env(safe-area-inset-bottom)));
+  display:block;pointer-events:auto
+}
+.меню-кнопки{width:100%;display:grid;grid-template-columns:repeat(4,1fr);align-items:start;justify-content:stretch;gap:0}
+.меню-мини{
+  position:relative;width:44px;height:44px;margin:0 auto;padding:0;display:grid;place-items:center;border:1px solid rgba(106,221,255,.65);border-radius:50%;clip-path:none;
+  color:#dff8ff;background:radial-gradient(circle at 50% 35%,rgba(29,110,174,.67),rgba(3,24,62,.76));
+  box-shadow:inset 0 0 0 3px rgba(92,207,247,.08),0 0 13px rgba(39,194,255,.15);backdrop-filter:blur(6px)
+}
+.меню-мини::before{content:"";position:absolute;inset:4px;border:1px solid rgba(174,239,255,.12);border-radius:50%;pointer-events:none}
+.меню-мини svg{width:22px;height:22px}.меню-мини b{font-size:22px;font-weight:600}
+.меню-мини-подпись{position:absolute;top:50px;left:50%;transform:translateX(-50%);display:block;color:#d5e9f4;
+  font-size:11px;font-weight:700;line-height:1;letter-spacing:0;text-transform:none;white-space:nowrap;text-shadow:0 2px 8px #00102e}
+.меню-кошелёк{height:38px;min-width:68px;justify-content:center;padding:0 10px;border:1px solid rgba(133,229,255,.5);border-radius:21px;
+  color:#fff1a8;background:radial-gradient(circle at 50% 20%,rgba(29,110,174,.65),rgba(3,24,62,.78));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 0 13px rgba(39,194,255,.15);backdrop-filter:blur(6px);font-size:16px;font-weight:800}
+@media (max-height:700px){
+  .меню-режимы{top:49px}.меню-режим{height:34px;font-size:12px}.меню-миссия{top:45%}
+  .меню-мир{font-size:9px}.меню-уровень{font-size:18px}.меню-выбор-уровня{grid-template-columns:38px 1fr 38px}.меню-уровень-стрелка{width:38px;height:38px}
+  .меню-играть{width:106px;height:106px;min-height:106px;margin-top:7px;font-size:21px}.меню-играть::before{inset:-12px}.меню-играть svg{width:22px;height:22px}
+  .меню-результат{margin-top:7px}.меню-подвал{bottom:22px}.меню-мини{width:40px;height:40px}.меню-мини-подпись{top:45px;font-size:9px}.меню-кошелёк{height:34px;min-width:62px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){.меню-играть::before{animation:none}}
+}
+
+/* Нижняя панель меню: механические кнопки в стиле командного ангара.
+   Форма круглая, материал общий; различаются только пиктограммы. */
+.меню-подвал{align-items:end;gap:12px}
+.меню-кнопки{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.меню-мини{
+  position:relative;width:56px;height:56px;margin:0 auto 18px;padding:0;overflow:visible;
+  display:grid;place-items:center;border:2px solid #94adc2;border-radius:50%;clip-path:none;
+  color:#effcff;background:
+    radial-gradient(circle at 50% 38%,rgba(35,102,163,.96) 0 43%,rgba(7,30,67,.98) 66%,#04142e 100%);
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.38),inset 0 -4px 7px rgba(0,5,24,.72),
+    0 0 0 4px rgba(10,32,61,.92),0 0 0 5px rgba(166,202,225,.42),
+    0 5px 0 #07101e,0 8px 18px rgba(0,5,24,.58),0 0 16px rgba(48,201,255,.25);
+  backdrop-filter:blur(7px);transition:transform .12s ease,filter .15s ease,box-shadow .15s ease
+}
+.меню-мини::before{
+  content:"";position:absolute;inset:5px;border:1px solid rgba(111,226,255,.68);border-radius:50%;
+  background:linear-gradient(155deg,rgba(255,255,255,.1),transparent 38%);box-shadow:inset 0 0 10px rgba(40,188,255,.13);pointer-events:none
+}
+.меню-мини::after{
+  content:"";position:absolute;left:50%;bottom:-7px;width:14px;height:3px;transform:translateX(-50%);border-radius:3px;
+  background:#ffb541;box-shadow:0 0 7px rgba(255,171,40,.95);pointer-events:none
+}
+.меню-мини svg{position:relative;z-index:1;width:23px;height:23px;filter:drop-shadow(0 0 6px rgba(111,226,255,.48))}
+.меню-мини b{position:relative;z-index:1;font-size:23px;font-weight:650;text-shadow:0 0 7px rgba(111,226,255,.48)}
+.меню-мини:active{transform:translateY(3px) scale(.96);filter:brightness(1.12);box-shadow:
+  inset 0 2px 1px rgba(255,255,255,.34),inset 0 -3px 6px rgba(0,5,24,.7),0 0 0 4px rgba(10,32,61,.92),0 0 0 5px rgba(166,202,225,.38),0 2px 0 #07101e,0 0 16px rgba(48,201,255,.34)}
+.меню-мини-подпись{
+  position:absolute;left:50%;top:69px;transform:translateX(-50%);display:block;
+  color:#d1e8f5;font-size:9px;font-weight:700;line-height:1;letter-spacing:.01em;text-transform:none;white-space:nowrap;
+  text-shadow:0 2px 8px rgba(0,7,27,.95)
+}
+.меню-мини.экономика-ждёт::after{right:auto;left:42px;top:-5px;bottom:auto;transform:none;width:17px;height:17px;background:#ffb541;box-shadow:0 0 9px rgba(255,171,40,.9)}
+.меню-кошелёк{
+  height:50px;min-width:68px;margin-bottom:23px;padding:0 12px;border:2px solid #94adc2;border-radius:25px;
+  color:#fff0b5;background:radial-gradient(circle at 50% 30%,rgba(34,91,145,.96),rgba(5,25,58,.98));
+  box-shadow:inset 0 2px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,5,24,.65),0 0 0 4px rgba(10,32,61,.9),
+    0 5px 0 #07101e,0 8px 18px rgba(0,5,24,.55),0 0 14px rgba(48,201,255,.2);font-size:14px;font-weight:800
+}
+.меню-кошелёк i{font-size:17px}
+@media (max-height:700px){
+  .меню-кнопки{gap:7px}.меню-мини{width:49px;height:49px;margin-bottom:16px}.меню-мини svg{width:20px;height:20px}
+  .меню-мини b{font-size:20px}.меню-мини-подпись{top:60px;font-size:8px}.меню-кошелёк{height:44px;min-width:62px;margin-bottom:20px}
+}
+
+/* ══ ГЛАВНОЕ МЕНЮ: СИНЯЯ ПАНЕЛЬ ПОВЕРХ ПЕРВОНАЧАЛЬНОГО АРТА ════════
+   Фон остаётся 01-key-art.png. Ни демонстрационная подложка, ни новый
+   фон из стенда сюда не переносятся — только выбранный язык элементов. */
+.главное-меню{
+  --меню-корпус:#123867;--меню-тень-корпуса:#061a36;--меню-линия:#2d7daf;
+  --меню-свечение:#58dcff;--меню-актив:#d7f8ff
+}
+.меню-арт{object-position:50% 50%;filter:saturate(1.04) contrast(1.035)}
+.меню-тень{
+  background:
+    linear-gradient(180deg,rgba(1,7,24,.73) 0,rgba(1,8,28,.08) 25%,rgba(1,7,24,.03) 65%,rgba(1,7,24,.78) 100%),
+    radial-gradient(ellipse at 50% 48%,transparent 35%,rgba(0,6,22,.16) 100%)
+}
+.меню-верх{left:14px;right:14px;top:max(14px,env(safe-area-inset-top));filter:none;text-align:left}
+.меню-бренд-ряд{display:flex;justify-content:flex-start;align-items:center}
+.меню-марка{display:none}.меню-логотип{margin:0;color:#fff;font-size:25px;font-weight:800;line-height:1;letter-spacing:.015em;text-shadow:0 2px 13px rgba(0,9,34,.92)}
+.меню-режимы{
+  position:relative;left:auto;top:auto;width:100%;height:62px;margin:13px 0 0;padding:0;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;overflow:hidden;
+  border:1px solid var(--меню-линия);border-radius:20px;
+  background:linear-gradient(145deg,var(--меню-корпус),var(--меню-тень-корпуса));
+  box-shadow:inset -5px -5px 8px rgba(255,255,255,.025),inset 5px 5px 9px rgba(0,5,22,.88),
+    -3px -3px 9px rgba(182,239,255,.12),7px 9px 18px rgba(0,0,0,.42);
+  backdrop-filter:blur(10px)
+}
+.меню-режимы::before{content:"";position:absolute;z-index:2;inset:3px;border:1px solid rgba(255,255,255,.04);border-radius:16px;pointer-events:none}
+.меню-режим{
+  position:relative;width:auto;min-width:0;height:100%;padding:0 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  border:0;border-radius:0;clip-path:none;color:#8ba8c3;background:transparent;box-shadow:none;backdrop-filter:none;
+  font:700 12px/1 "Nunito",ui-rounded,"Segoe UI",sans-serif;letter-spacing:.005em;text-align:center;text-transform:none;white-space:nowrap;
+  transition:color .18s ease,background .18s ease,text-shadow .18s ease
+}
+.меню-режим::before{content:"";position:static;width:6px;height:6px;margin:0;border:0;border-radius:50%;background:#46647e;box-shadow:inset 0 1px rgba(255,255,255,.2)}
+.меню-режим::after{content:"";position:absolute;right:0;top:23%;bottom:23%;left:auto;width:1px;height:auto;background:linear-gradient(transparent,var(--меню-линия),transparent);box-shadow:none}
+.меню-режим:last-child::after{display:none}
+.меню-режим[aria-pressed="true"]{color:var(--меню-актив);background:linear-gradient(180deg,rgba(78,212,255,.17),rgba(33,123,190,.05));
+  box-shadow:inset 0 -2px var(--меню-свечение),inset 0 0 18px rgba(63,199,255,.1);text-shadow:0 0 10px rgba(88,225,255,.55)}
+.меню-режим[aria-pressed="true"]::before{background:var(--меню-свечение);box-shadow:0 0 7px var(--меню-свечение),0 0 15px rgba(59,217,255,.65)}
+.меню-режим:active{transform:none;filter:brightness(1.18)}
+
+.меню-низ{position:absolute;inset:118px 14px max(14px,calc(8px + env(safe-area-inset-bottom)));display:block;pointer-events:none}
+.меню-миссия{
+  position:absolute;left:50%;right:auto;top:47%;transform:translate(-50%,-50%);width:min(330px,88vw);padding:0;
+  display:flex;flex-direction:column;align-items:center;border:0;border-radius:0;clip-path:none;background:none;box-shadow:none;backdrop-filter:none;pointer-events:auto
+}
+.меню-миссия-шапка{display:block;margin:0 0 5px;text-align:center}.меню-миссия-метка{display:none}
+.меню-мир{max-width:none;margin:0;padding:0;border:0;border-radius:0;color:#91dff6;background:none;box-shadow:none;backdrop-filter:none;
+  font-size:9px;font-weight:800;line-height:1.25;letter-spacing:.13em;text-align:center;text-transform:uppercase;text-shadow:0 2px 10px #00102e}
+.меню-выбор-уровня{width:100%;min-height:35px;display:grid;grid-template-columns:36px minmax(0,1fr) 36px;align-items:center;gap:8px}
+.главное-меню[data-mode="campaign"] .меню-выбор-уровня{grid-template-columns:1fr}
+.главное-меню[data-mode="campaign"] .меню-уровень-стрелка{display:none!important}
+.главное-меню[data-mode="daily"] .меню-выбор-уровня,
+.главное-меню[data-mode="blitz"] .меню-выбор-уровня{grid-template-columns:1fr}
+.главное-меню[data-mode="daily"] .меню-уровень-стрелка,
+.главное-меню[data-mode="blitz"] .меню-уровень-стрелка{display:none!important}
+.главное-меню[data-mode="daily"] .меню-уровень{font-size:25px;letter-spacing:-.025em}
+.меню-уровень{min-width:0;padding:3px 5px;border:0;border-radius:0;color:#f4fbff;background:none;box-shadow:none;backdrop-filter:none;
+  font-size:19px;font-weight:800;line-height:1.18;letter-spacing:-.01em;text-align:center;text-transform:none;text-shadow:0 2px 12px #00102e,0 0 10px rgba(0,13,42,.9)}
+.меню-уровень-стрелка{width:36px;height:36px;border:1px solid rgba(126,222,255,.42);border-radius:11px;color:#e7faff;
+  background:linear-gradient(145deg,rgba(18,69,121,.88),rgba(5,27,62,.88));box-shadow:inset 0 1px rgba(255,255,255,.12),0 4px 12px rgba(0,5,24,.38);backdrop-filter:blur(7px)}
+.меню-результат{order:4;width:min(310px,84vw);margin:10px 0 0;padding:7px 11px;border:1px solid rgba(119,224,255,.2);border-radius:14px;
+  color:#c7e3f1;background:rgba(2,15,43,.64);box-shadow:0 8px 24px rgba(0,5,24,.28);text-shadow:0 2px 9px #00102e;font-size:11px;line-height:1.45;backdrop-filter:blur(8px)}
+.меню-результат.серия,.меню-результат.итог-боя{width:min(340px,92vw);padding:8px 9px;background:rgba(2,13,40,.82)}
+.меню-результат .итог-боя-заголовок{font-size:14px}
+.меню-результат .итог-боя-метрика b{font-size:20px}
+.меню-результат .итог-боя-метрика span{margin-top:5px;font-size:9px}
+.меню-результат .итог-боя-рекорд{font-size:10px}
+.меню-играть{
+  order:3;position:relative;width:248px;height:84px;min-height:84px;margin:15px 0 0;padding:0 25px;overflow:hidden;
+  display:flex;flex-direction:row;align-items:center;justify-content:center;gap:13px;border:1px solid var(--меню-линия);border-radius:22px;clip-path:none;
+  color:#eefcff;background:linear-gradient(145deg,var(--меню-корпус),var(--меню-тень-корпуса));
+  box-shadow:inset -5px -5px 8px rgba(255,255,255,.025),inset 5px 5px 10px rgba(0,5,22,.88),
+    -4px -4px 10px rgba(182,239,255,.1),8px 11px 22px rgba(0,0,0,.48);
+  filter:none;animation:none;font-size:23px;font-weight:800;line-height:1.05;letter-spacing:.1em;text-align:center;text-shadow:0 0 10px rgba(88,225,255,.4)
+}
+.меню-играть::before{content:"";position:absolute;inset:8px;width:auto;height:auto;margin:0;border:1px solid rgba(100,224,255,.3);border-radius:15px;clip-path:none;
+  background:linear-gradient(180deg,rgba(67,207,255,.18),rgba(16,83,142,.08));box-shadow:inset 0 1px rgba(255,255,255,.12),inset 0 -4px 8px rgba(0,0,0,.24),0 0 16px rgba(54,202,255,.12);pointer-events:none}
+.меню-играть::after{content:none}
+.меню-играть svg{display:none}
+.меню-играть span{position:relative;z-index:1}.меню-играть:active{transform:translateY(2px) scale(.988);filter:brightness(.96)}
+
+.меню-подвал{
+  position:absolute;left:0;right:0;bottom:0;height:84px;margin:0;padding:0;overflow:hidden;pointer-events:auto;
+  display:grid;grid-template-columns:minmax(0,1fr) 64px;align-items:stretch;gap:0;
+  border:1px solid var(--меню-линия);border-radius:22px;background:linear-gradient(145deg,var(--меню-корпус),var(--меню-тень-корпуса));
+  box-shadow:inset -5px -5px 8px rgba(255,255,255,.025),inset 5px 5px 9px rgba(0,5,22,.88),
+    -3px -3px 9px rgba(182,239,255,.1),7px 9px 18px rgba(0,0,0,.46);backdrop-filter:blur(11px)
+}
+.меню-подвал::before{content:"";position:absolute;z-index:2;inset:3px;border:1px solid rgba(255,255,255,.04);border-radius:18px;pointer-events:none}
+.меню-подвал:has(.меню-кошелёк[hidden]){grid-template-columns:1fr}
+.меню-кнопки{width:100%;height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.меню-мини{
+  position:relative;width:100%;height:100%;margin:0;padding:7px 2px 6px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  border:0;border-radius:0;clip-path:none;color:#b9d7e8;background:transparent;box-shadow:none;backdrop-filter:none;transition:color .18s ease,background .18s ease
+}
+.меню-мини::before{content:"";position:absolute;inset:auto 0 23% auto;width:1px;height:54%;border:0;border-radius:0;background:linear-gradient(transparent,var(--меню-линия),transparent);box-shadow:none}
+.меню-мини::after{content:none}.меню-мини:hover{color:#effcff;background:rgba(91,211,255,.055)}
+.меню-мини:active{transform:none;filter:brightness(1.18)}
+.меню-мини svg{position:relative;z-index:1;width:25px;height:25px;filter:drop-shadow(0 0 5px rgba(88,220,255,.28))}.меню-мини b{position:relative;z-index:1;font-size:25px;font-weight:700}
+.меню-мини-подпись{position:static;transform:none;display:block;color:#c5e1ef;font-size:10px;font-weight:700;line-height:1;letter-spacing:.01em;text-transform:none;white-space:nowrap;text-shadow:none}
+.меню-кошелёк{
+  position:relative;width:100%;height:100%;min-width:0;margin:0;padding:8px 3px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  border:0;border-radius:0;color:#ffe27b;background:rgba(28,121,181,.08);box-shadow:none;backdrop-filter:none;font-size:16px;font-weight:800
+}
+.меню-кошелёк::before{content:"";position:absolute;left:0;top:23%;bottom:23%;width:1px;background:linear-gradient(transparent,var(--меню-линия),transparent)}
+.меню-кошелёк i{font-size:23px;line-height:1;color:#57e3ff;text-shadow:0 0 8px rgba(87,227,255,.6)}
+
+/* Отдельная форма выбора кампании открывается из верхней панели. */
+.кампания-выбор-диалог{position:relative;width:100%;max-width:386px;padding:24px 22px 22px;overflow:hidden;border-radius:27px;
+  border:1px solid rgba(194,235,255,.25);background:linear-gradient(145deg,rgba(22,59,101,.96),rgba(5,20,46,.98));
+  box-shadow:0 24px 60px rgba(0,0,0,.62),inset 0 1px rgba(255,255,255,.14)}
+.кампания-выбор-диалог::before{content:"";position:absolute;left:-50px;top:-70px;width:180px;height:160px;border-radius:50%;background:#20c9ff;filter:blur(55px);opacity:.18;pointer-events:none}
+.кампания-выбор-диалог::after{content:"";position:absolute;right:-55px;bottom:-75px;width:180px;height:170px;border-radius:50%;background:#7857e8;filter:blur(58px);opacity:.2;pointer-events:none}
+.кампания-выбор-диалог>*{position:relative;z-index:1}.кампания-выбор-шапка{display:grid;grid-template-columns:1fr auto;align-items:start;gap:12px;padding-bottom:15px;border-bottom:1px solid rgba(154,222,255,.14)}
+.кампания-выбор-шапка small{display:block;color:#64dfff;font-size:8px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.кампания-выбор-шапка h2{margin:6px 0 0;color:#f5fbff;font-size:23px;line-height:1.1;letter-spacing:-.025em}
+.кампания-выбор-закрыть{width:38px;height:38px;border:1px solid rgba(165,229,255,.22);border-radius:12px;color:#bcecff;background:rgba(6,28,62,.65);font-size:22px;line-height:1;cursor:pointer}
+.кампания-выбор-пояснение{margin:17px 0 14px;color:#a8c4d8;font-size:12px;line-height:1.5}
+.кампания-выбор-панель{position:relative;min-height:150px;padding:18px 18px 18px 20px;display:flex;align-items:center;gap:18px;overflow:hidden;
+  border:1px solid rgba(145,219,255,.16);border-radius:21px;background:linear-gradient(135deg,rgba(13,49,88,.72),rgba(5,24,53,.82));box-shadow:inset 0 2px 9px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.05)}
+.кампания-выбор-данные{min-width:0;flex:1}.кампания-выбор-данные>span{display:block;margin-bottom:8px;color:#6cdfff;font-size:8px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.кампания-выбор-данные strong{display:block;color:#f4fbff;font-size:25px;line-height:1.05;letter-spacing:-.035em}.кампания-выбор-данные small{display:block;margin-top:9px;color:#769bb7;font-size:9px;line-height:1.35}
+.кампания-счётчик{width:88px;flex:none;display:grid;justify-items:center;gap:5px;padding:7px;border:1px solid rgba(153,224,255,.15);border-radius:18px;background:rgba(3,17,39,.52);box-shadow:inset 0 2px 7px rgba(0,0,0,.38)}
+.кампания-счётчик button{width:100%;height:31px;border:1px solid rgba(145,224,255,.14);border-radius:10px;color:#87dcff;background:rgba(75,172,221,.08);font-size:14px;font-weight:800;cursor:pointer}
+.кампания-счётчик button:disabled{opacity:.2;cursor:default}.кампания-номер{width:100%;height:52px;display:flex;align-items:baseline;justify-content:center;border:1px solid rgba(112,226,255,.3);border-radius:12px;
+  color:#fff;background:linear-gradient(180deg,rgba(25,134,194,.42),rgba(8,59,106,.5));box-shadow:inset 0 1px rgba(255,255,255,.15),0 0 18px rgba(30,188,244,.12)}
+.кампания-номер b{font-size:25px;line-height:52px}.кампания-номер small{margin-left:3px;color:#83a8c0;font-size:9px;font-weight:700}
+.кампания-выбор-статус{display:flex;align-items:center;gap:8px;margin:11px 3px 0;color:#819fb5;font-size:9px;line-height:1.35}.кампания-выбор-статус i{width:6px;height:6px;flex:none;border-radius:50%;background:#61e8ff;box-shadow:0 0 9px rgba(66,223,255,.75)}
+.кампания-выбор-применить{width:100%;height:48px;margin-top:17px;border:1px solid rgba(154,235,255,.72);border-radius:14px;color:#fff;background:linear-gradient(180deg,#208bd0,#0d519d);
+  box-shadow:inset 0 1px rgba(255,255,255,.28),0 5px 14px rgba(0,32,88,.38);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+@media (max-height:700px){
+  .меню-верх{top:9px}.меню-логотип{font-size:21px}.меню-режимы{height:52px;margin-top:8px}.меню-режим{font-size:10px;gap:5px}
+  .меню-низ{inset:90px 12px 8px}.меню-миссия{top:45%}.меню-играть{width:220px;height:70px;min-height:70px;margin-top:9px;font-size:20px}
+  .меню-подвал{height:72px}.меню-мини{gap:5px}.меню-мини svg{width:21px;height:21px}.меню-мини b{font-size:21px}.меню-мини-подпись{font-size:8px}.меню-кошелёк i{font-size:20px}
 }
 
 /* ── системные окна ────────────────────────────────────────────────
@@ -1916,7 +2256,7 @@ body{display:grid; place-items:start center;
     <div class="заставка-подсказка">нажмите, чтобы продолжить</div>
   </section>
 
-  <section class="главное-меню" id="mainMenu" aria-label="Главное меню">
+  <section class="главное-меню on" id="mainMenu" data-mode="campaign" aria-label="Главное меню" aria-hidden="false">
     <img class="меню-арт" src="01-key-art.png" alt="Робот-помощник и кубическая фигура на космической арене">
     <div class="меню-тень"></div>
     <header class="меню-верх">
@@ -1947,7 +2287,7 @@ body{display:grid; place-items:start center;
         <div class="меню-результат" id="menuResult" aria-live="polite"></div>
         <button class="меню-играть" id="menuPlay" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>
-          <span id="menuPlayText">Играть</span>
+          <span id="menuPlayText">К бою</span>
         </button>
       </section>
       <div class="меню-подвал">
@@ -1970,6 +2310,30 @@ body{display:grid; place-items:start center;
       </div>
     </div>
   </section>
+
+  <div class="overlay кампания-выбор" id="campaignPicker" aria-hidden="true">
+    <section class="кампания-выбор-диалог" role="dialog" aria-modal="true" aria-labelledby="campaignPickerTitle">
+      <header class="кампания-выбор-шапка">
+        <div><small>Кампания</small><h2 id="campaignPickerTitle">Выбор уровня</h2></div>
+        <button class="кампания-выбор-закрыть" id="campaignPickerClose" type="button" aria-label="Закрыть">×</button>
+      </header>
+      <p class="кампания-выбор-пояснение">Переключайте доступные миссии. Текущий бой останется сохранён до подтверждения выбора.</p>
+      <div class="кампания-выбор-панель">
+        <div class="кампания-выбор-данные">
+          <span>Выбранная миссия</span>
+          <strong id="campaignPickerName">Кольцо</strong>
+          <small id="campaignPickerWorld">Глава II · Кристаллический пояс</small>
+        </div>
+        <div class="кампания-счётчик">
+          <button id="campaignPickerNext" type="button" aria-label="Следующий уровень">▲</button>
+          <div class="кампания-номер"><b id="campaignPickerLevel">6</b><small id="campaignPickerTotal">/20</small></div>
+          <button id="campaignPickerPrev" type="button" aria-label="Предыдущий уровень">▼</button>
+        </div>
+      </div>
+      <div class="кампания-выбор-статус"><i></i><span id="campaignPickerState">Бой сохранён</span></div>
+      <button class="кампания-выбор-применить" id="campaignPickerApply" type="button">Продолжить уровень</button>
+    </section>
+  </div>
 
   <div class="overlay" id="shop" aria-hidden="true">
     <div class="dialog магазин-диалог" role="dialog" aria-modal="true" aria-labelledby="shopTitle">
@@ -2074,7 +2438,7 @@ const ЗВУКИ_ВШИТЫ = {
 const ЗВУК =   (()=>{
   // Готовый pre-rendered пакет: во время игры тоны не синтезируются.
   // Автономная версия читает вшитые WAV, серверная при необходимости — assets/audio.
-  const ПАПКА = "../assets/audio/";
+  const ПАПКА = "assets/audio/";
   let ctx = null, мастер = null, компрессор = null, фильтрБоя = null, шинаБоя = null, включён = true;
   let голосов = 0;
   const ПРЕДЕЛ_ГОЛОСОВ = 7;
@@ -8692,6 +9056,60 @@ function подписьЕжедневнойДаты(){
 function лучшийЕжедневныйРезультат(){
   return прочитатьЕжедневныеРезультаты()[ЕЖЕДНЕВНАЯ_ДАТА] || null;
 }
+
+let уровеньВВыбореКампании=1;
+function обновитьФормуВыбораКампании(){
+  const последнийОткрытый=последнийОткрытыйУровеньКампании();
+  уровеньВВыбореКампании=Math.max(1,Math.min(последнийОткрытый,уровеньВВыбореКампании));
+  const мир=мирКампании(уровеньВВыбореКампании);
+  $("campaignPickerLevel").textContent=уровеньВВыбореКампании;
+  $("campaignPickerTotal").textContent="/"+ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА;
+  $("campaignPickerName").textContent=имяФормыУровня(уровеньВВыбореКампании);
+  $("campaignPickerWorld").textContent="Глава "+мир.глава+" · "+мир.имя;
+  $("campaignPickerPrev").disabled=уровеньВВыбореКампании<=1;
+  $("campaignPickerNext").disabled=уровеньВВыбореКампании>=последнийОткрытый;
+  const этоТекущий=уровеньВВыбореКампании===уровень;
+  $("campaignPickerState").textContent=уровеньВВыбореКампании<=максимумПройден ? "Уровень пройден" :
+    этоТекущий&&естьВосстановленныйБой ? "Бой сохранён — прогресс будет продолжен" : "Уровень доступен";
+  $("campaignPickerApply").textContent=этоТекущий&&естьВосстановленныйБой ? "Продолжить уровень" :
+    этоТекущий ? "Остаться на уровне" : "Выбрать уровень";
+}
+function показатьВыборКампании(){
+  if(!РЕЖИМ_КАМПАНИИ||РЕЖИМ_КАЛИБРОВКИ) return;
+  закрытьСтатистику(); закрытьСправку(); закрытьМагазин();
+  уровеньВВыбореКампании=уровень;
+  обновитьФормуВыбораКампании();
+  $("campaignPicker").classList.add("on");
+  $("campaignPicker").setAttribute("aria-hidden","false");
+  ЗВУК.тап();
+}
+function закрытьВыборКампании(){
+  $("campaignPicker").classList.remove("on");
+  $("campaignPicker").setAttribute("aria-hidden","true");
+}
+function сдвинутьВыборКампании(сдвиг){
+  const новый=Math.max(1,Math.min(последнийОткрытыйУровеньКампании(),уровеньВВыбореКампании+сдвиг));
+  if(новый===уровеньВВыбореКампании) return;
+  уровеньВВыбореКампании=новый;
+  обновитьФормуВыбораКампании();
+  ЗВУК.тап();
+}
+function применитьВыборКампании(){
+  if(уровеньВВыбореКампании!==уровень) выбратьУровеньКампании(уровеньВВыбореКампании-уровень);
+  закрытьВыборКампании();
+  ЗВУК.тап();
+}
+const КЛЮЧ_ПРОПУСКА_ЗАСТАВКИ="cube-line:skip-intro-once";
+function отметитьСменуРежимаБезЗаставки(){
+  try{ sessionStorage.setItem(КЛЮЧ_ПРОПУСКА_ЗАСТАВКИ,"1"); }catch(_){ }
+}
+function забратьПропускЗаставки(){
+  try{
+    const пропустить=sessionStorage.getItem(КЛЮЧ_ПРОПУСКА_ЗАСТАВКИ)==="1";
+    sessionStorage.removeItem(КЛЮЧ_ПРОПУСКА_ЗАСТАВКИ);
+    return пропустить;
+  }catch(_){ return false; }
+}
 function переключитьРежимМеню(режим){
   const адрес=new URL(location.href);
   ["level","seed","shape","playtest","battle","reset","shield","multi","calibration"].forEach(ключ=>адрес.searchParams.delete(ключ));
@@ -8708,6 +9126,7 @@ function переключитьРежимМеню(режим){
   }else{
     адрес.searchParams.set("campaign","1");
   }
+  отметитьСменуРежимаБезЗаставки();
   location.href=адрес.href;
 }
 
@@ -8735,7 +9154,7 @@ function выбратьУровеньКампании(сдвиг){
   удалитьСохранённыйБой();
   const результат=$("menuResult");
   результат.classList.remove("on","серия"); результат.replaceChildren();
-  $("menuPlayText").textContent="Играть";
+  $("menuPlayText").textContent="К бою";
   обновитьМенюКампании();
   ЗВУК.тап();
 }
@@ -8789,7 +9208,7 @@ function обновитьПервуюПокупкуВМеню(){
   if(!$("mainMenu").classList.contains("on")) return;
   if(ожидание) $("menuPlayText").textContent="Выбрать усиление";
   else if($("menuPlayText").textContent==="Выбрать усиление")
-    $("menuPlayText").textContent=последнийИсходКампании?.победа ? "Следующий уровень" : "Играть";
+    $("menuPlayText").textContent=последнийИсходКампании?.победа ? "Следующий уровень" : "К бою";
 }
 function обновитьМагазин(){
   const доступен=режимЭкономики();
@@ -8852,6 +9271,7 @@ function показатьГлавноеМеню(немедленно=false){
   закрытьСтатистику();
   закрытьСправку();
   закрытьМагазин();
+  закрытьВыборКампании();
   const подсказка=$("tutorialTip");
   подсказка.classList.remove("on");
   подсказка.setAttribute("aria-hidden","true");
@@ -8924,7 +9344,9 @@ function показатьГлавноеМеню(немедленно=false){
     }
     кнопка.textContent=последнийРезультатБлица ? "Повторить блиц" : "Начать блиц";
   }else if(РЕЖИМ_ЕЖЕДНЕВНЫЙ){
-    $("menuLevel").textContent="Задача дня · "+подписьЕжедневнойДаты()+" · "+имяФормыУровня(уровень);
+    $("menuWorld").hidden=false;
+    $("menuWorld").textContent="Задача дня · "+подписьЕжедневнойДаты();
+    $("menuLevel").textContent=имяФормыУровня(уровень);
     результат.classList.remove("серия");
     const лучший=лучшийЕжедневныйРезультат();
     if(последнийРезультатЕжедневного){
@@ -8958,14 +9380,15 @@ function показатьГлавноеМеню(немедленно=false){
     кнопка.textContent=кампанияЗавершена ? (РЕЖИМ_КАЛИБРОВКИ ? "Новый контрольный проход" : "Повторить кампанию") :
       естьВосстановленныйБой ? "Продолжить" :
       последнийИсходКампании?.победа ? "Следующий уровень" :
-      последнийИсходКампании ? "Повторить уровень" : "Играть";
+      последнийИсходКампании ? "Повторить уровень" : "К бою";
   }else{
     $("menuLevel").textContent = "Уровень " + уровень;
     результат.classList.remove("on","серия");
     результат.replaceChildren();
-    кнопка.textContent="Играть";
+    кнопка.textContent="К бою";
   }
   const меню = $("mainMenu");
+  меню.dataset.mode=РЕЖИМ_ИСПЫТАНИЯ ? "challenge" : РЕЖИМ_БЛИЦ ? "blitz" : РЕЖИМ_ЕЖЕДНЕВНЫЙ ? "daily" : "campaign";
   меню.classList.remove("уходит");
   меню.classList.add("on");
   меню.setAttribute("aria-hidden","false");
@@ -9317,6 +9740,7 @@ function кадр(время){
 }
 
 // ── запуск ────────────────────────────────────────────────────────────
+const пропуститьЗаставкуПослеСменыРежима=забратьПропускЗаставки();
 собратьСцену();
 новаяИгра();
 if((РЕЖИМ_КАМПАНИИ && !РЕЖИМ_КАЛИБРОВКИ) || РЕЖИМ_ИСПЫТАНИЯ){
@@ -9338,9 +9762,9 @@ if(РЕЖИМ_DEV){
 кадр(performance.now());
 if(!РЕЖИМ_DEV && !РЕЖИМ_БЕЗ_ПОДСКАЗОК){
   показатьГлавноеМеню();
-  setTimeout(запуститьЗаставку,60);
+  if(!пропуститьЗаставкуПослеСменыРежима) setTimeout(запуститьЗаставку,60);
 }
-else if(РЕЖИМ_БЕЗ_ПОДСКАЗОК){
+else{
   $("mainMenu").classList.remove("on","уходит");
   $("mainMenu").setAttribute("aria-hidden","true");
 }
@@ -9390,6 +9814,7 @@ $("menuPlay").addEventListener("click", начатьИзМеню);
 $("introSplash").addEventListener("click",()=>закрытьЗаставку(true));
 $("menuCampaignMode").addEventListener("click",()=>{
   if(РЕЖИМ_ЕЖЕДНЕВНЫЙ || РЕЖИМ_БЛИЦ || РЕЖИМ_ИСПЫТАНИЯ){ ЗВУК.тап(); переключитьРежимМеню("campaign"); }
+  else показатьВыборКампании();
 });
 $("menuDailyMode").addEventListener("click",()=>{
   if(!РЕЖИМ_ЕЖЕДНЕВНЫЙ){ ЗВУК.тап(); переключитьРежимМеню("daily"); }
@@ -9402,6 +9827,11 @@ $("menuChallengeMode").addEventListener("click",()=>{
 });
 $("menuPrevLevel").addEventListener("click", ()=>РЕЖИМ_ИСПЫТАНИЯ ? выбратьИспытание(-1) : выбратьУровеньКампании(-1));
 $("menuNextLevel").addEventListener("click", ()=>РЕЖИМ_ИСПЫТАНИЯ ? выбратьИспытание(1) : выбратьУровеньКампании(1));
+$("campaignPickerPrev").addEventListener("click",()=>сдвинутьВыборКампании(-1));
+$("campaignPickerNext").addEventListener("click",()=>сдвинутьВыборКампании(1));
+$("campaignPickerApply").addEventListener("click",применитьВыборКампании);
+$("campaignPickerClose").addEventListener("click",закрытьВыборКампании);
+$("campaignPicker").addEventListener("click",событие=>{ if(событие.target===$("campaignPicker")) закрытьВыборКампании(); });
 $("menuHelp").addEventListener("click", показатьСправку);
 $("menuShop").addEventListener("click", показатьМагазин);
 $("shopClose").addEventListener("click", ()=>{ ЗВУК.тап(); закрытьМагазин(); });
