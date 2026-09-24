@@ -1581,7 +1581,7 @@ body{display:grid; place-items:start center;
          тонкая полная окружность + разорванные яркие дуги + четыре
          янтарных осевых маркера. Маркеры НЕ вращаются: они показывают
          оси механизма. -->
-    <g class="анализатор">
+    <g class="анализатор" transform="translate(0 52)">
       <circle cx="195" cy="238" r="140" fill="none" stroke="#0E2A5E"
               stroke-width="1.4"/>
       <!-- ⚡ Свечение даёт ПАРНАЯ линия (толстая полупрозрачная под
@@ -1646,13 +1646,15 @@ body{display:grid; place-items:start center;
     </g>
 
     <!-- ── 6. Свет от платформы: 6 широких лучей, между ними прозрачно -->
-    <g class="лучи">
-      <path d="M172 480 148 190h30l14 290z" fill="url(#г-луч)"/>
-      <path d="M195 480 186 176h18l9 304z"  fill="url(#г-луч)"/>
-      <path d="M218 480 212 190h28l-18 290z" fill="url(#г-луч)"/>
-      <path d="M150 482 108 222h26l32 260z" fill="url(#г-луч)" opacity=".7"/>
-      <path d="M240 482 282 222h-26l-32 260z" fill="url(#г-луч)" opacity=".7"/>
-      <path d="M195 478 168 152h54l-27 326z" fill="url(#г-луч)" opacity=".5"/>
+    <g class="лучи-позиция" transform="translate(0 52)">
+      <g class="лучи">
+        <path d="M172 480 148 190h30l14 290z" fill="url(#г-луч)"/>
+        <path d="M195 480 186 176h18l9 304z"  fill="url(#г-луч)"/>
+        <path d="M218 480 212 190h28l-18 290z" fill="url(#г-луч)"/>
+        <path d="M150 482 108 222h26l32 260z" fill="url(#г-луч)" opacity=".7"/>
+        <path d="M240 482 282 222h-26l-32 260z" fill="url(#г-луч)" opacity=".7"/>
+        <path d="M195 478 168 152h54l-27 326z" fill="url(#г-луч)" opacity=".5"/>
+      </g>
     </g>
 
     <!-- ── 7. Платформа: три материала — керамика, металл, графит.
@@ -1694,7 +1696,7 @@ body{display:grid; place-items:start center;
 
     <!-- Фигуры реакций на бой: обычно невидимы, включаются классом
          на .stage и гаснут сами по окончании анимации. -->
-    <g class="реакции">
+    <g class="реакции" transform="translate(0 52)">
       <circle class="волна" cx="195" cy="238" r="140"/>
       <circle class="рябь"  cx="195" cy="238" r="22"/>
       <circle class="блик"  cx="195" cy="238" r="134"/>
