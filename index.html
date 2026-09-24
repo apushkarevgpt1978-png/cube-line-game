@@ -1117,6 +1117,9 @@ body{display:grid; place-items:start center;
 .game .звёзды{opacity:.32}
 .game .планеты{opacity:.18}
 .game .орбиты{opacity:.34}
+/* Площадка уже нарисована в каждом фоне. Старые SVG-пол и пьедестал
+   создавали двойное основание; оставляем только лучи и боевые реакции. */
+.game .пол,.game .платформа{display:none}
 .мир-декор{opacity:0;transition:opacity .6s ease}
 .game[data-world="crystal"] .мир-кристаллы{opacity:.25}
 .game[data-world="shipyard"] .мир-верфь{opacity:.28}
@@ -1436,7 +1439,7 @@ body{display:grid; place-items:start center;
 
     <!-- Один фон на активную главу. JS меняет только href при выборе
          уровня, поэтому браузер не декодирует четыре большие картинки сразу. -->
-    <image id="worldBackdrop" class="фон-мира-арт" x="0" y="0" width="390" height="860"
+    <image id="worldBackdrop" class="фон-мира-арт" x="0" y="-225" width="390" height="860"
            preserveAspectRatio="xMidYMid slice" href="assets/worlds/nebula.jpg"/>
 
     <!-- ── 1. Глубокий космос ─────────────────────────────────────── -->
