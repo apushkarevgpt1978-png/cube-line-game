@@ -301,7 +301,7 @@ body{display:grid; place-items:start center;
    цветная сфера-заряд с числом → держатели по бокам → оранжевые штрихи
    снизу → голубой индикатор на нижней грани. */
 .slots{display:flex; gap:7px; justify-content:center; padding:6px 12px 4px;
-  position:relative; z-index:2}
+  position:relative; z-index:2;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 
 .slot{
   width:calc(62px * var(--мш)); height:calc(62px * var(--мш));
@@ -476,7 +476,7 @@ body{display:grid; place-items:start center;
 /* ── очередь боезапаса ───────────────────────────────────────────── */
 .qhint{text-align:center; font-size:12px; color:#8fcbff;
   font-weight:700; padding:2px 12px 8px; position:relative; z-index:2;
-  text-shadow:0 0 10px rgba(80,180,255,.45)}
+  text-shadow:0 0 10px rgba(80,180,255,.45);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 /* ⚠️ ВЫСОТА ЗАФИКСИРОВАНА под максимум рядов (3 фишки + 2 зазора).
    Без неё блок то растёт, то сжимается при смене числа рядов в колонках —
    и вся панель под ним прыгает. */
@@ -9809,12 +9809,14 @@ if(СОХРАНЕНИЕ_ДОСТУПНО){
 }
 
 const холст = $("scene");
-const зонаБоезапаса = $("queue");
+const зоныБоезапасаБезЗума = [$("slots"),$("queue"),$("qhint")];
 // На iOS серия быстрых нажатий по зарядам иногда распознаётся браузером
-// как double-tap/pinch zoom. В боевой сцене масштабирование оставляем,
-// но внутри очереди любой браузерный жест масштаба должен быть погашен.
-["dblclick","gesturestart","gesturechange"].forEach(тип=>
-  зонаБоезапаса.addEventListener(тип,событие=>событие.preventDefault(),{passive:false})
+// как double-tap/pinch zoom. После первого тапа фишка исчезает, поэтому
+// второй может попасть уже в пустую пушку или подпись — защищаем весь низ.
+["dblclick","gesturestart","gesturechange","gestureend"].forEach(тип=>
+  зоныБоезапасаБезЗума.forEach(зона=>
+    зона.addEventListener(тип,событие=>событие.preventDefault(),{passive:false})
+  )
 );
 // ⚠️ Только Pointer Events и только НА ХОЛСТЕ.
 // Раньше pointermove висел на window и звал preventDefault() — любое
