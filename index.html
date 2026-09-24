@@ -1010,6 +1010,60 @@ body{display:grid; place-items:start center;
 }
 @media (prefers-reduced-motion:reduce){.меню-играть{animation:none}}
 
+/* ══ ГЛАВНОЕ МЕНЮ: «ЦЕНТР УПРАВЛЕНИЯ» ═══════════════════════════════
+   Режимы — навигация, карточка — текущая миссия, синяя кнопка —
+   единственное главное действие. Внутренние элементы больше не выглядят
+   как набор конкурирующих неоновых капсул. */
+.меню-тень{
+  background:linear-gradient(180deg,rgba(1,7,25,.72) 0,rgba(1,8,28,.06) 24%,rgba(1,7,24,.06) 48%,rgba(1,7,24,.88) 100%)
+}
+.меню-верх{left:16px;right:16px;top:max(16px,env(safe-area-inset-top));filter:drop-shadow(0 3px 12px rgba(0,5,25,.82))}
+.меню-бренд-ряд{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
+.меню-бренд{min-width:0}
+.меню-марка{font-size:6px;letter-spacing:.24em;color:#7dddf5}
+.меню-логотип{margin:3px 0 0;font-size:24px;line-height:.9;font-weight:600;letter-spacing:-.025em;text-shadow:0 0 15px rgba(38,186,255,.7)}
+.меню-слоган{display:none}
+.меню-режимы{width:100%;display:grid;grid-template-columns:repeat(4,1fr);margin-top:12px;padding:0;border:0;border-bottom:1px solid rgba(128,216,255,.22);
+  border-radius:0;background:rgba(2,12,38,.36);box-shadow:none;backdrop-filter:blur(7px)}
+.меню-режим{position:relative;min-width:0;padding:9px 3px 10px;border-radius:0;color:#91abc7;background:transparent;
+  font-size:7px;letter-spacing:.06em;white-space:nowrap}
+.меню-режим[aria-pressed="true"]{color:#eafaff;background:rgba(40,157,220,.11);box-shadow:none}
+.меню-режим[aria-pressed="true"]::after{content:"";position:absolute;left:18%;right:18%;bottom:-1px;height:2px;border-radius:2px;
+  background:#57ddff;box-shadow:0 0 9px rgba(68,214,255,.85)}
+.меню-кошелёк{min-width:58px;justify-content:center;padding:7px 10px;border-radius:11px;color:#fff1a8;
+  background:rgba(3,18,48,.72);border:1px solid rgba(118,220,255,.3);box-shadow:none;backdrop-filter:blur(7px);font-size:11px}
+.меню-низ{left:16px;right:16px;bottom:max(16px,calc(10px + env(safe-area-inset-bottom)));display:grid;gap:9px}
+.меню-миссия{width:100%;box-sizing:border-box;padding:13px;border:1px solid rgba(120,223,255,.3);border-radius:19px;
+  background:linear-gradient(180deg,rgba(7,31,70,.88),rgba(2,14,42,.94));
+  box-shadow:inset 0 1px rgba(255,255,255,.1),0 14px 36px rgba(0,5,24,.42);backdrop-filter:blur(10px)}
+.меню-миссия-шапка{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}
+.меню-миссия-метка{color:#66dcfa;font-size:7px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.меню-мир{max-width:62%;margin:0;padding:0;border:0;border-radius:0;color:#9bc0d8;background:none;box-shadow:none;
+  font-size:7px;letter-spacing:.08em;text-align:right;backdrop-filter:none}
+.меню-выбор-уровня{display:grid;grid-template-columns:30px 1fr 30px;gap:7px;align-items:center;min-height:37px}
+.меню-уровень{min-width:0;padding:3px 5px;border:0;border-radius:0;color:#f2fbff;background:none;box-shadow:none;backdrop-filter:none;
+  font-size:14px;line-height:1.18;font-weight:600;letter-spacing:.025em;text-transform:none}
+.меню-уровень-стрелка{width:30px;height:30px;border-color:rgba(126,222,255,.3);border-radius:10px;color:#dff8ff;
+  background:rgba(19,73,124,.38);box-shadow:none;font-size:18px}
+.меню-результат{width:100%;box-sizing:border-box;margin-top:6px;padding:8px 4px 2px;border:0;border-top:1px solid rgba(121,214,255,.18);
+  border-radius:0;color:#bcd7e8;background:none;box-shadow:none;backdrop-filter:none;font-size:9px}
+.меню-результат.серия,.меню-результат.итог-боя{width:100%}
+.меню-играть{width:100%;min-height:54px;margin-top:10px;padding:0 22px;border:1px solid #9defff;border-radius:15px;
+  font-size:18px;font-weight:600;letter-spacing:.065em;animation:none;
+  box-shadow:inset 0 2px rgba(255,255,255,.42),inset 0 -3px rgba(0,37,112,.28),0 5px 0 #052d77,0 10px 24px rgba(0,136,238,.38)}
+.меню-играть::before,.меню-играть::after{width:5px;height:5px}
+.меню-играть svg{width:20px;height:20px}
+.меню-кнопки{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.меню-мини{width:auto;height:49px;padding:5px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  border-color:rgba(132,224,255,.28);border-radius:12px;color:#dff7ff;background:rgba(5,27,66,.76);box-shadow:none;font-size:17px;backdrop-filter:blur(7px)}
+.меню-мини svg{width:17px;height:17px}
+.меню-мини-подпись{display:block;color:#8eb8d2;font-size:6px;font-weight:600;line-height:1;letter-spacing:.08em;text-transform:uppercase}
+.меню-мини.экономика-ждёт::after{right:4px;top:3px}
+@media (max-height:700px){
+  .меню-верх{top:10px}.меню-режимы{margin-top:8px}.меню-низ{bottom:9px;gap:6px}.меню-миссия{padding:10px 11px;border-radius:16px}
+  .меню-играть{min-height:48px;margin-top:7px;font-size:16px}.меню-мини{height:43px}.меню-выбор-уровня{min-height:32px}
+}
+
 /* ── системные окна ────────────────────────────────────────────────
    Скрываем их через visibility, а не оставляем обычными блоками внутри
    grid игры. Так справка и статистика физически не могут занять место под
@@ -1829,40 +1883,51 @@ body{display:grid; place-items:start center;
     <img class="меню-арт" src="01-key-art.png" alt="Робот-помощник и кубическая фигура на космической арене">
     <div class="меню-тень"></div>
     <header class="меню-верх">
-      <div class="меню-марка">космическая головоломка</div>
-      <h1 class="меню-логотип">Cube <span>Line</span></h1>
-      <p class="меню-слоган">Найди линию. Разбери фигуру.</p>
-      <div class="меню-мир" id="menuWorld">Глава I · Стартовая туманность</div>
-    </header>
-    <div class="меню-низ">
+      <div class="меню-бренд-ряд">
+        <div class="меню-бренд">
+          <div class="меню-марка">космическая головоломка</div>
+          <h1 class="меню-логотип">Cube <span>Line</span></h1>
+        </div>
+        <div class="меню-кошелёк" id="menuWallet" title="Кристаллы"><i>◆</i><b id="menuCrystals">0</b></div>
+      </div>
       <div class="меню-режимы" aria-label="Режим игры">
         <button class="меню-режим" id="menuCampaignMode" type="button" aria-pressed="true">Кампания</button>
         <button class="меню-режим" id="menuDailyMode" type="button" aria-pressed="false">Задача дня</button>
         <button class="меню-режим" id="menuBlitzMode" type="button" aria-pressed="false">Блиц</button>
         <button class="меню-режим" id="menuChallengeMode" type="button" aria-pressed="false">Испытания</button>
       </div>
-      <div class="меню-выбор-уровня">
-        <button class="меню-уровень-стрелка" id="menuPrevLevel" type="button" aria-label="Предыдущий уровень" hidden>‹</button>
-        <div class="меню-уровень" id="menuLevel">Уровень 1</div>
-        <button class="меню-уровень-стрелка" id="menuNextLevel" type="button" aria-label="Следующий уровень" hidden>›</button>
-        <div class="меню-кошелёк" id="menuWallet" title="Кристаллы"><i>◆</i><b id="menuCrystals">0</b></div>
-      </div>
-      <div class="меню-результат" id="menuResult" aria-live="polite"></div>
-      <button class="меню-играть" id="menuPlay" type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>
-        <span id="menuPlayText">Играть</span>
-      </button>
+    </header>
+    <div class="меню-низ">
+      <section class="меню-миссия">
+        <div class="меню-миссия-шапка">
+          <span class="меню-миссия-метка">Текущая миссия</span>
+          <div class="меню-мир" id="menuWorld">Глава I · Стартовая туманность</div>
+        </div>
+        <div class="меню-выбор-уровня">
+          <button class="меню-уровень-стрелка" id="menuPrevLevel" type="button" aria-label="Предыдущий уровень" hidden>‹</button>
+          <div class="меню-уровень" id="menuLevel">Уровень 1</div>
+          <button class="меню-уровень-стрелка" id="menuNextLevel" type="button" aria-label="Следующий уровень" hidden>›</button>
+        </div>
+        <div class="меню-результат" id="menuResult" aria-live="polite"></div>
+        <button class="меню-играть" id="menuPlay" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>
+          <span id="menuPlayText">Играть</span>
+        </button>
+      </section>
       <div class="меню-кнопки">
         <button class="меню-мини" id="menuSound" type="button" title="Звук">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4z" fill="currentColor"/><path class="волны" d="M15.4 9.2a4 4 0 0 1 0 5.6M18 6.6a7.6 7.6 0 0 1 0 10.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span class="меню-мини-подпись">Звук</span>
         </button>
         <button class="меню-мини" id="menuShop" type="button" title="Магазин бустеров" aria-label="Магазин бустеров">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 19 8.5 16.4 20H7.6L5 8.5z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m5 8.5 7 4 7-4M12 12.5V20" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+          <span class="меню-мини-подпись">Усиления</span>
         </button>
         <button class="меню-мини" id="menuStats" type="button" title="Статистика прохождений" aria-label="Статистика прохождений">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V11M12 19V5M19 19V8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M3.5 19.5h17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".65"/></svg>
+          <span class="меню-мини-подпись">Статистика</span>
         </button>
-        <button class="меню-мини" id="menuHelp" type="button" title="Как играть">?</button>
+        <button class="меню-мини" id="menuHelp" type="button" title="Как играть"><b>?</b><span class="меню-мини-подпись">Помощь</span></button>
       </div>
     </div>
   </section>
