@@ -1079,9 +1079,9 @@ body{display:grid; place-items:start center;
 .арена + #scene, .stage canvas{position:relative; z-index:1}
 
 /* ══ ЧЕТЫРЕ МИРА КАМПАНИИ ════════════════════════════════════════════
-   Один лёгкий SVG меняет палитру и дальний декор по главам. Новых
-   WebGL-сцен и постоянно работающих эффектов здесь нет: телефон платит
-   ровно столько же, сколько за прежнюю арену. */
+   У каждой главы свой статичный растровый фон. Он даёт настоящую смену
+   локации без видео и без постоянно работающих GPU-эффектов. Старый SVG
+   остаётся сверху: платформа, лучи и боевые реакции продолжают работать. */
 .game{
   --мир-космос-верх:#020A20;--мир-космос-центр:#061B46;--мир-космос-низ:#031333;
   --мир-свечение:#0B4E9B;--мир-туман:#083B82;--мир-акцент:#37D9FF;
@@ -1112,10 +1112,15 @@ body{display:grid; place-items:start center;
 .game #г-пол stop:last-child{stop-color:var(--мир-пол-низ)}
 .game .орбиты ellipse,.game .дуги-б circle{stroke:var(--мир-второй)}
 .game .дуги-а circle,.game .кольцо{stroke:var(--мир-акцент)}
+.фон-мира-арт{opacity:.94;transition:opacity .45s ease}
+.фон-мира-заливка{opacity:.2}
+.game .звёзды{opacity:.32}
+.game .планеты{opacity:.18}
+.game .орбиты{opacity:.34}
 .мир-декор{opacity:0;transition:opacity .6s ease}
-.game[data-world="crystal"] .мир-кристаллы{opacity:.72}
-.game[data-world="shipyard"] .мир-верфь{opacity:.8}
-.game[data-world="quantum"] .мир-квант{opacity:.72}
+.game[data-world="crystal"] .мир-кристаллы{opacity:.25}
+.game[data-world="shipyard"] .мир-верфь{opacity:.28}
+.game[data-world="quantum"] .мир-квант{opacity:.25}
 
 /* Гиперпрыжок работает только при открытии новой главы. Движутся transform
    и opacity, поэтому во время перехода WebGL ещё не запущен. */
@@ -1429,8 +1434,13 @@ body{display:grid; place-items:start center;
       </linearGradient>
     </defs>
 
+    <!-- Один фон на активную главу. JS меняет только href при выборе
+         уровня, поэтому браузер не декодирует четыре большие картинки сразу. -->
+    <image id="worldBackdrop" class="фон-мира-арт" x="0" y="0" width="390" height="860"
+           preserveAspectRatio="xMidYMid slice" href="assets/worlds/nebula.jpg"/>
+
     <!-- ── 1. Глубокий космос ─────────────────────────────────────── -->
-    <rect width="390" height="860" fill="url(#г-космос)"/>
+    <rect class="фон-мира-заливка" width="390" height="860" fill="url(#г-космос)"/>
     <ellipse cx="195" cy="238" rx="210" ry="235" fill="url(#г-центр)"/>
 
     <!-- ── 2. Туманность: глубина, а не дымовая завеса ─────────────── -->
@@ -2469,10 +2479,10 @@ const НАЧИНКА = ["red", "orange", "green", "yellow", "purple", "blue"];
 // Кампания собрана в четыре визуальные главы по пять уровней. Мир влияет
 // только на подачу: генерация, экономика и честность боезапаса не меняются.
 const МИРЫ_КАМПАНИИ = [
-  {id:"nebula",  глава:"I",   имя:"Стартовая туманность", коротко:"Туманность",       с:1,  по:5},
-  {id:"crystal", глава:"II",  имя:"Кристаллический пояс",коротко:"Кристаллы",        с:6,  по:10},
-  {id:"shipyard",глава:"III", имя:"Орбитальная верфь",   коротко:"Верфь",             с:11, по:15},
-  {id:"quantum", глава:"IV",  имя:"Квантовое измерение", коротко:"Квантовый сектор", с:16, по:20}
+  {id:"nebula",  глава:"I",   имя:"Стартовая туманность", коротко:"Туманность",       фон:"assets/worlds/nebula.jpg",  с:1,  по:5},
+  {id:"crystal", глава:"II",  имя:"Кристаллический пояс",коротко:"Кристаллы",        фон:"assets/worlds/crystal.jpg", с:6,  по:10},
+  {id:"shipyard",глава:"III", имя:"Орбитальная верфь",   коротко:"Верфь",             фон:"assets/worlds/shipyard.jpg",с:11, по:15},
+  {id:"quantum", глава:"IV",  имя:"Квантовое измерение", коротко:"Квантовый сектор", фон:"assets/worlds/quantum.jpg", с:16, по:20}
 ];
 function мирКампании(номер){
   const n=Math.max(1,Math.min(20,Math.floor(Number(номер)||1)));
@@ -2481,6 +2491,8 @@ function мирКампании(номер){
 function применитьМирКампании(номер){
   const мир=мирКампании(номер), игра=document.querySelector(".game"), плашка=$("menuWorld");
   if(игра) игра.dataset.world=мир.id;
+  const фон=$("worldBackdrop");
+  if(фон && фон.getAttribute("href")!==мир.фон) фон.setAttribute("href",мир.фон);
   if(плашка){
     плашка.textContent="Глава "+мир.глава+" · "+мир.имя;
     плашка.hidden=!РЕЖИМ_КАМПАНИИ||РЕЖИМ_КАЛИБРОВКИ;
