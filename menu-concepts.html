@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cube Line — лёгкие варианты меню</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020a20;color:#eefbff;font-family:"Nunito","Segoe UI",sans-serif}
+body{padding:28px;background:radial-gradient(circle at 50% 0,#123568 0,#07162f 38%,#020817 76%)}
+.head{max-width:1280px;margin:0 auto 22px;display:flex;align-items:end;justify-content:space-between;gap:20px}
+.head small{display:block;color:#61ddff;font-size:10px;font-weight:800;letter-spacing:.22em;text-transform:uppercase}
+.head h1{margin:7px 0 0;font-size:32px;font-weight:600;letter-spacing:-.025em}.head p{max-width:510px;margin:0;color:#91abc3;font-size:13px;line-height:1.45}
+.grid{max-width:1280px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(300px,390px));justify-content:center;gap:24px}
+.variant{min-width:0}.label{display:flex;align-items:center;gap:9px;margin:0 0 9px;padding-left:4px}.label b{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#25bde8;color:#03203d;font-size:11px}.label strong{font-size:13px}.label span{margin-left:auto;color:#7e9ab4;font-size:10px}
+.phone{position:relative;aspect-ratio:390/760;overflow:hidden;border:1px solid rgba(112,226,255,.35);border-radius:26px;background:#041435;box-shadow:0 28px 70px rgba(0,2,15,.6)}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;pointer-events:none}
+.brand{position:absolute;left:20px;top:20px;color:#f5fcff;font-size:22px;font-weight:600;letter-spacing:.04em}.brand i{font-style:normal;color:#57dfff}
+.wallet{position:absolute;right:18px;top:18px;padding:7px 10px;border-radius:11px;background:rgba(3,18,47,.66);backdrop-filter:blur(8px);color:#ffe899;font-size:11px;font-weight:700}.wallet em{font-style:normal;color:#59e2ff}
+button{font:inherit}
+.play{height:53px;border:1px solid #9ff0ff;border-radius:15px;color:#fff;background:linear-gradient(180deg,#37d7f8,#0b72cd);box-shadow:inset 0 2px rgba(255,255,255,.4),0 5px 0 #063a85,0 10px 25px rgba(0,132,236,.3);font-size:17px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.play span{margin-right:10px;color:#fff0a1}.tiny{color:#8cb2ca;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+/* A — самый лёгкий: режим прячется в одном селекторе, служебные действия — в «ещё». */
+.a .art{object-position:50% 43%}.a .shade{background:linear-gradient(180deg,rgba(0,7,25,.64),transparent 28%,transparent 58%,rgba(0,6,24,.92) 100%)}
+.mode{position:absolute;left:19px;top:61px;padding:6px 9px;border:0;border-radius:9px;color:#b9e8f6;background:rgba(4,26,63,.55);backdrop-filter:blur(7px);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.more{position:absolute;right:19px;top:61px;width:29px;height:29px;border:0;border-radius:9px;color:#dff8ff;background:rgba(4,26,63,.55);font-size:17px}
+.focus{position:absolute;left:18px;right:18px;bottom:18px;padding:16px;border-radius:19px;background:rgba(3,18,48,.82);border:1px solid rgba(124,226,255,.27);backdrop-filter:blur(12px)}
+.focus-top{display:flex;justify-content:space-between;gap:12px}.focus h2{margin:5px 0 0;font-size:20px;font-weight:600}.focus .state{margin:7px 0 13px;color:#a8c5d7;font-size:10px}.focus .play{width:100%}.focus-foot{display:flex;justify-content:center;gap:25px;margin-top:13px;color:#9ac6de;font-size:8px;font-weight:700;text-transform:uppercase}.focus-foot b{color:#5edfff;font-size:12px;margin-right:4px}
+
+/* B — путь по главам виден, но нет четырёх тяжёлых вкладок. */
+.b .art{object-position:50% 38%;filter:saturate(.9) brightness(.8)}.b .shade{background:linear-gradient(90deg,rgba(0,8,28,.72),transparent 37%),linear-gradient(180deg,rgba(0,6,23,.45),transparent 48%,rgba(0,7,26,.9))}
+.route{position:absolute;left:18px;top:82px;bottom:180px;width:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px}
+.route::before{content:"";position:absolute;top:24%;bottom:24%;width:1px;background:linear-gradient(#5ce4ff,#427cff,#7a5cff)}
+.route i{position:relative;z-index:1;width:8px;height:8px;border:2px solid #74def4;border-radius:50%;background:#071935}.route i.on{width:17px;height:17px;background:#55ddff;box-shadow:0 0 18px #38cbff}.route small{position:relative;width:44px;text-align:center;color:#8ba8c0;font-size:7px}.route small.on{color:#effcff}
+.route-title{position:absolute;left:79px;right:18px;bottom:145px}.route-title .chapter{color:#67dfff;font-size:8px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.route-title h2{margin:6px 0 4px;font-size:24px;font-weight:600}.route-title p{margin:0;color:#adc7d8;font-size:10px}
+.route-action{position:absolute;left:79px;right:18px;bottom:76px}.route-action .play{width:100%}.dock{position:absolute;left:79px;right:18px;bottom:21px;display:flex;justify-content:space-between;color:#a2c4d8;font-size:8px;font-weight:700;text-transform:uppercase}.dock span{padding:8px 4px}
+
+/* C — персонаж говорит только одну полезную фразу, остальное спрятано. */
+.c .art{object-position:32% 52%;filter:saturate(.96)}.c .shade{background:linear-gradient(180deg,rgba(0,6,24,.67),transparent 26%,rgba(0,6,24,.1) 55%,rgba(0,7,25,.94) 100%)}
+.chapter-chip{position:absolute;left:20px;top:62px;color:#a9dded;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.speech{position:absolute;left:20px;right:20px;bottom:95px;padding:15px 15px 14px;border-radius:20px 20px 20px 5px;background:rgba(245,252,255,.92);color:#0b2245;box-shadow:0 15px 45px rgba(0,5,25,.36)}
+.speech .who{color:#0c91bb;font-size:8px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.speech h2{margin:6px 0 3px;font-size:21px;font-weight:700}.speech p{margin:0;color:#4f6882;font-size:10px}.speech .play{width:100%;margin-top:13px}
+.c-dock{position:absolute;left:20px;right:20px;bottom:22px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.c-dock button{height:48px;border:1px solid rgba(127,225,255,.28);border-radius:13px;color:#b9def0;background:rgba(4,24,61,.75);backdrop-filter:blur(8px);font-size:8px;font-weight:700;text-transform:uppercase}.c-dock b{display:block;color:#effcff;font-size:15px;margin-bottom:2px}
+
+@media(max-width:1020px){body{padding:18px}.head{display:block}.head p{margin-top:9px}.grid{display:flex;overflow-x:auto;justify-content:flex-start;scroll-snap-type:x mandatory;padding:0 calc(50vw - 180px) 18px}.variant{flex:0 0 min(360px,88vw);scroll-snap-align:center}}
+</style>
+</head>
+<body>
+<header class="head"><div><small>Cube Line · концепт</small><h1>Три облегчённых меню</h1></div><p>В каждом варианте сохранены миссия, прогресс и запуск. Вторичные режимы и служебные функции перестали конкурировать с главным действием.</p></header>
+<main class="grid">
+  <section class="variant"><div class="label"><b>01</b><strong>Фокус</strong><span>минимум интерфейса</span></div><div class="phone a">
+    <img class="art" src="01-key-art.png" alt=""><div class="shade"></div><div class="brand">CUBE <i>LINE</i></div><div class="wallet"><em>◆</em> 52</div>
+    <button class="mode">Кампания⌄</button><button class="more">•••</button>
+    <div class="focus"><div class="focus-top"><span class="tiny">Текущая миссия</span><span class="tiny">6 / 20</span></div><h2>Кольцо</h2><div class="state">Бой сохранён · осталось 116 кубиков</div><button class="play"><span>▶</span>Продолжить</button><div class="focus-foot"><span><b>◇</b>Усиления</span><span><b>▥</b>Статистика</span></div></div>
+  </div></section>
+  <section class="variant"><div class="label"><b>02</b><strong>Маршрут</strong><span>кампания на первом месте</span></div><div class="phone b">
+    <img class="art" src="01-key-art.png" alt=""><div class="shade"></div><div class="brand">CUBE <i>LINE</i></div><div class="wallet"><em>◆</em> 52</div>
+    <div class="route"><small>Туманность</small><i></i><small class="on">Кристаллы</small><i class="on"></i><small>Верфь</small><i></i><small>Квант</small></div>
+    <div class="route-title"><div class="chapter">Глава II · 6/20</div><h2>Кольцо</h2><p>Бой сохранён · 116 кубиков</p></div><div class="route-action"><button class="play"><span>▶</span>Продолжить</button></div><div class="dock"><span>Режимы</span><span>Усиления</span><span>Ещё</span></div>
+  </div></section>
+  <section class="variant"><div class="label"><b>03</b><strong>Кубик</strong><span>персонаж ведёт игрока</span></div><div class="phone c">
+    <img class="art" src="01-key-art.png" alt=""><div class="shade"></div><div class="brand">CUBE <i>LINE</i></div><div class="wallet"><em>◆</em> 52</div><div class="chapter-chip">Кристаллический пояс · 6/20</div>
+    <div class="speech"><div class="who">Кубик · навигатор</div><h2>Продолжим разбирать Кольцо?</h2><p>Бой сохранён · осталось 116 кубиков</p><button class="play"><span>▶</span>Продолжить</button></div>
+    <div class="c-dock"><button><b>◇</b>Усиления</button><button><b>▥</b>Прогресс</button><button><b>•••</b>Ещё</button></div>
+  </div></section>
+</main>
+</body>
+</html>
