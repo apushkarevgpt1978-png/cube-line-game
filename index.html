@@ -826,6 +826,13 @@ body{display:grid; place-items:start center;
   margin:7px 0 0; color:#e9f8ff; font-size:12px; font-weight:600;
   letter-spacing:.02em; text-shadow:0 2px 10px #00102e;
 }
+.меню-мир{
+  width:max-content;max-width:calc(100vw - 56px);margin:11px auto 0;padding:5px 10px;
+  border:1px solid color-mix(in srgb,var(--мир-акцент) 65%,transparent);border-radius:999px;
+  color:#eafdff;background:rgba(2,13,42,.72);box-shadow:0 0 15px color-mix(in srgb,var(--мир-акцент) 22%,transparent);
+  font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;backdrop-filter:blur(5px)
+}
+.меню-мир[hidden]{display:none}
 .меню-низ{
   position:absolute; left:24px; right:24px;
   bottom:max(27px,calc(17px + env(safe-area-inset-bottom)));
@@ -1070,6 +1077,89 @@ body{display:grid; place-items:start center;
   z-index:0; pointer-events:none;
 }
 .арена + #scene, .stage canvas{position:relative; z-index:1}
+
+/* ══ ЧЕТЫРЕ МИРА КАМПАНИИ ════════════════════════════════════════════
+   Один лёгкий SVG меняет палитру и дальний декор по главам. Новых
+   WebGL-сцен и постоянно работающих эффектов здесь нет: телефон платит
+   ровно столько же, сколько за прежнюю арену. */
+.game{
+  --мир-космос-верх:#020A20;--мир-космос-центр:#061B46;--мир-космос-низ:#031333;
+  --мир-свечение:#0B4E9B;--мир-туман:#083B82;--мир-акцент:#37D9FF;
+  --мир-второй:#147DFF;--мир-пол-верх:#0A1A3E;--мир-пол-низ:#05102A;
+}
+.game[data-world="crystal"]{
+  --мир-космос-верх:#020D1C;--мир-космос-центр:#063452;--мир-космос-низ:#031A2B;
+  --мир-свечение:#12A889;--мир-туман:#0C766F;--мир-акцент:#62F3DC;
+  --мир-второй:#1D9BE8;--мир-пол-верх:#09283A;--мир-пол-низ:#041522;
+}
+.game[data-world="shipyard"]{
+  --мир-космос-верх:#030811;--мир-космос-центр:#10293A;--мир-космос-низ:#070F1C;
+  --мир-свечение:#157C98;--мир-туман:#17485A;--мир-акцент:#63DEFF;
+  --мир-второй:#287FB5;--мир-пол-верх:#121C29;--мир-пол-низ:#080E18;
+}
+.game[data-world="quantum"]{
+  --мир-космос-верх:#08051E;--мир-космос-центр:#24104D;--мир-космос-низ:#0A0928;
+  --мир-свечение:#8A39E6;--мир-туман:#5429A8;--мир-акцент:#F06DFF;
+  --мир-второй:#745CFF;--мир-пол-верх:#18113D;--мир-пол-низ:#090721;
+}
+.game #г-космос stop:nth-child(1){stop-color:var(--мир-космос-верх)}
+.game #г-космос stop:nth-child(2){stop-color:var(--мир-космос-центр)}
+.game #г-космос stop:nth-child(3){stop-color:var(--мир-космос-низ)}
+.game #г-центр stop:first-child{stop-color:var(--мир-свечение)}
+.game #г-туман stop:first-child{stop-color:var(--мир-туман)}
+.game #г-луч stop:first-child,.game #г-луч stop:nth-child(2){stop-color:var(--мир-акцент)}
+.game #г-пол stop:first-child{stop-color:var(--мир-пол-верх)}
+.game #г-пол stop:last-child{stop-color:var(--мир-пол-низ)}
+.game .орбиты ellipse,.game .дуги-б circle{stroke:var(--мир-второй)}
+.game .дуги-а circle,.game .кольцо{stroke:var(--мир-акцент)}
+.мир-декор{opacity:0;transition:opacity .6s ease}
+.game[data-world="crystal"] .мир-кристаллы{opacity:.72}
+.game[data-world="shipyard"] .мир-верфь{opacity:.8}
+.game[data-world="quantum"] .мир-квант{opacity:.72}
+
+/* Гиперпрыжок работает только при открытии новой главы. Движутся transform
+   и opacity, поэтому во время перехода WebGL ещё не запущен. */
+.переход-мира{
+  position:absolute;inset:0;z-index:30;display:grid;place-items:center;overflow:hidden;
+  color:#effcff;background:#02091d;opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .18s ease,visibility 0s linear .18s
+}
+.переход-мира.on{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .18s ease}
+.переход-мира::before{
+  content:"";position:absolute;inset:-35%;background:
+    repeating-conic-gradient(from 0deg,rgba(146,235,255,.94) 0 .35deg,transparent .45deg 7deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 7%,#000 20% 58%,transparent 77%);
+  mask:radial-gradient(circle,transparent 0 7%,#000 20% 58%,transparent 77%);
+  opacity:0;transform:scale(.3);animation:none
+}
+.переход-мира.on::before{animation:звёздныйТоннель 1.55s cubic-bezier(.15,.72,.18,1) .18s both}
+.гипер-сетка{
+  position:absolute;left:-35%;right:-35%;bottom:-20%;height:66%;transform:perspective(260px) rotateX(63deg);
+  transform-origin:50% 100%;background:
+    repeating-linear-gradient(90deg,rgba(78,218,255,.32) 0 1px,transparent 1px 34px),
+    repeating-linear-gradient(0deg,rgba(78,218,255,.35) 0 1px,transparent 1px 28px);
+  filter:drop-shadow(0 0 5px rgba(42,196,255,.7));opacity:.72
+}
+.переход-мира.on .гипер-сетка{animation:сеткаВПрыжке 1.6s linear both}
+.гипер-кольца{position:absolute;inset:0;display:grid;place-items:center}
+.гипер-кольца i{position:absolute;width:44vmin;height:44vmin;border:2px solid #b9f5ff;border-radius:50%;
+  box-shadow:0 0 18px #38d7ff,inset 0 0 18px #38d7ff;opacity:0}
+.гипер-кольца i:nth-child(2){width:30vmin;height:30vmin;animation-delay:.14s!important}
+.гипер-кольца i:nth-child(3){width:18vmin;height:18vmin;animation-delay:.28s!important}
+.переход-мира.on .гипер-кольца i{animation:кольцоПрыжка 1.15s ease-in .24s both}
+.переход-мира-текст{position:relative;z-index:2;text-align:center;text-transform:uppercase;text-shadow:0 0 18px #35d8ff}
+.переход-мира-текст span{display:block;color:#8deaff;font-size:9px;font-weight:700;letter-spacing:.28em}
+.переход-мира-текст strong{display:block;margin-top:8px;font-size:22px;line-height:1.05;letter-spacing:.06em}
+.переход-мира-текст small{display:block;margin-top:8px;color:#ffe890;font-size:8px;letter-spacing:.18em}
+.переход-мира.on .переход-мира-текст{animation:названиеМира 2.25s ease both}
+@keyframes звёздныйТоннель{0%{opacity:0;transform:scale(.25) rotate(0)}35%{opacity:.9}82%{opacity:1;transform:scale(2.15) rotate(12deg)}100%{opacity:0;transform:scale(3.1) rotate(16deg)}}
+@keyframes сеткаВПрыжке{0%{background-position:0 0,0 0;opacity:.72}75%{background-position:0 0,0 320px;opacity:.9}100%{background-position:0 0,0 480px;opacity:0}}
+@keyframes кольцоПрыжка{0%{opacity:0;transform:scale(.15)}28%{opacity:1}100%{opacity:0;transform:scale(4.2)}}
+@keyframes названиеМира{0%,34%{opacity:0;transform:scale(.86)}48%,82%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.05)}}
+@media (prefers-reduced-motion:reduce){
+  .переход-мира.on::before,.переход-мира.on .гипер-сетка,.переход-мира.on .гипер-кольца i{animation:none!important;opacity:0}
+  .переход-мира.on .переход-мира-текст{animation:none!important;opacity:1}
+}
 
 /* Вращение дуг: два слоя в РАЗНЫЕ стороны, 10-14 с. */
 .дуги-а{animation:дугиПоЧасовой 12s linear infinite;
@@ -1420,6 +1510,45 @@ body{display:grid; place-items:start center;
               stroke-width=".7" opacity=".3"/>
     </g>
 
+    <!-- Дальний декор миров. Центр намеренно свободен: там остаётся фигура. -->
+    <g class="мир-декор мир-кристаллы" stroke-linejoin="round">
+      <g transform="translate(18 178) rotate(-16)">
+        <path d="M0 18 13 0 27 14 20 42 5 39z" fill="#19BFAF" opacity=".22"/>
+        <path d="M13 0 14 31M0 18l14 13 13-17" fill="none" stroke="#77FFE4" stroke-width="1.2" opacity=".74"/>
+      </g>
+      <g transform="translate(344 112) rotate(18)">
+        <path d="M0 15 11 0 29 11 23 42 7 38z" fill="#2A87B9" opacity=".2"/>
+        <path d="M11 0 14 30M0 15l14 15 15-19" fill="none" stroke="#8EFFE9" stroke-width="1.1" opacity=".68"/>
+      </g>
+      <g transform="translate(330 337) scale(.72) rotate(-9)">
+        <path d="M0 18 13 0 27 14 20 42 5 39z" fill="#12A889" opacity=".2"/>
+        <path d="M13 0 14 31M0 18l14 13 13-17" fill="none" stroke="#62F3DC" stroke-width="1.3" opacity=".7"/>
+      </g>
+      <path d="M-18 286C72 248 111 270 161 255S276 218 408 260" fill="none" stroke="#62F3DC" stroke-width="8" stroke-dasharray="1 22" stroke-linecap="round" opacity=".34"/>
+    </g>
+    <g class="мир-декор мир-верфь" fill="none" stroke-linejoin="round">
+      <path d="M-4 92h62l30 28v168H44l-24-25V138H-4M394 80h-68l-29 31v177h47l25-27V124h25"
+            stroke="#5EDCFF" stroke-width="2" opacity=".28"/>
+      <path d="M8 119h34l21 18v102H28M382 108h-38l-21 20v112h40" stroke="#B5F5FF" stroke-width=".8" opacity=".42"/>
+      <path d="M-8 332c56-38 57-10 99-48M398 316c-59-37-64 2-106-44" stroke="#FF9B38" stroke-width="2.4" opacity=".72"/>
+      <g stroke="#63DEFF" opacity=".54">
+        <path d="M18 157h19v14H18zM49 198h22v17H49zM318 151h28v17h-28zM336 204h23v14h-23z"/>
+        <path d="M27 157v-18M60 198v-22M332 151v-21M348 204v-20"/>
+      </g>
+    </g>
+    <g class="мир-декор мир-квант" fill="none">
+      <path d="M-36 207 71 100l108 107L71 314zM211 201 321 91l110 110-110 110z"
+            stroke="#EF70FF" stroke-width="1.3" opacity=".34"/>
+      <path d="M-11 207 71 125l83 82-83 83zM237 201l84-84 84 84-84 84z"
+            stroke="#7E69FF" stroke-width="5" opacity=".13"/>
+      <path d="M22 402 195 318l173 84M53 432l142-69 142 69" stroke="#B064FF" stroke-width="1" opacity=".22"/>
+      <g fill="#E66EFF" opacity=".34">
+        <rect x="31" y="80" width="8" height="8" transform="rotate(45 35 84)"/>
+        <rect x="352" y="326" width="10" height="10" transform="rotate(45 357 331)"/>
+        <rect x="301" y="67" width="6" height="6" transform="rotate(45 304 70)"/>
+      </g>
+    </g>
+
     <!-- ── 4. Орбитальные линии: разные наклоны, выходят за края ───── -->
     <g class="орбиты" fill="none" stroke-width="1">
       <ellipse cx="195" cy="238" rx="250" ry="96" stroke="#147DFF" opacity=".28"
@@ -1610,6 +1739,16 @@ body{display:grid; place-items:start center;
     </div>
   </section>
 
+  <section class="переход-мира" id="worldTransition" aria-live="polite" aria-hidden="true">
+    <div class="гипер-сетка" aria-hidden="true"></div>
+    <div class="гипер-кольца" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="переход-мира-текст">
+      <span id="worldTransitionLabel">Гиперпрыжок</span>
+      <strong id="worldTransitionName">Кристаллический пояс</strong>
+      <small id="worldTransitionChapter">Глава II</small>
+    </div>
+  </section>
+
   <section class="главное-меню" id="mainMenu" aria-label="Главное меню">
     <img class="меню-арт" src="01-key-art.png" alt="Робот-помощник и кубическая фигура на космической арене">
     <div class="меню-тень"></div>
@@ -1617,6 +1756,7 @@ body{display:grid; place-items:start center;
       <div class="меню-марка">космическая головоломка</div>
       <h1 class="меню-логотип">Cube <span>Line</span></h1>
       <p class="меню-слоган">Найди линию. Разбери фигуру.</p>
+      <div class="меню-мир" id="menuWorld">Глава I · Стартовая туманность</div>
     </header>
     <div class="меню-низ">
       <div class="меню-режимы" aria-label="Режим игры">
@@ -2325,6 +2465,49 @@ function планФормКампании(){
 // но соседние фигуры сразу различаются даже до первого пробитого кубика.
 const КОРПУС  = ["white", "blue", "red", "green", "orange", "purple", "yellow"];
 const НАЧИНКА = ["red", "orange", "green", "yellow", "purple", "blue"];
+
+// Кампания собрана в четыре визуальные главы по пять уровней. Мир влияет
+// только на подачу: генерация, экономика и честность боезапаса не меняются.
+const МИРЫ_КАМПАНИИ = [
+  {id:"nebula",  глава:"I",   имя:"Стартовая туманность", коротко:"Туманность",       с:1,  по:5},
+  {id:"crystal", глава:"II",  имя:"Кристаллический пояс",коротко:"Кристаллы",        с:6,  по:10},
+  {id:"shipyard",глава:"III", имя:"Орбитальная верфь",   коротко:"Верфь",             с:11, по:15},
+  {id:"quantum", глава:"IV",  имя:"Квантовое измерение", коротко:"Квантовый сектор", с:16, по:20}
+];
+function мирКампании(номер){
+  const n=Math.max(1,Math.min(20,Math.floor(Number(номер)||1)));
+  return МИРЫ_КАМПАНИИ.find(м=>n>=м.с&&n<=м.по)||МИРЫ_КАМПАНИИ[0];
+}
+function применитьМирКампании(номер){
+  const мир=мирКампании(номер), игра=document.querySelector(".game"), плашка=$("menuWorld");
+  if(игра) игра.dataset.world=мир.id;
+  if(плашка){
+    плашка.textContent="Глава "+мир.глава+" · "+мир.имя;
+    плашка.hidden=!РЕЖИМ_КАМПАНИИ||РЕЖИМ_КАЛИБРОВКИ;
+  }
+  return мир;
+}
+function переходМеждуМирами(откуда,куда){
+  return мирКампании(откуда).id!==мирКампании(куда).id;
+}
+let переходМираИдёт=false;
+function запуститьПереходМира(откуда,куда,готово){
+  const слой=$("worldTransition"), мир=мирКампании(куда);
+  if(!слой||переходМираИдёт){ if(!переходМираИдёт&&готово) готово(); return; }
+  переходМираИдёт=true;
+  $("worldTransitionName").textContent=мир.имя;
+  $("worldTransitionChapter").textContent="Глава "+мир.глава+" · уровни "+мир.с+"–"+мир.по;
+  слой.classList.remove("on"); void слой.offsetWidth;
+  слой.classList.add("on"); слой.setAttribute("aria-hidden","false");
+  const тихо=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const длительность=тихо?760:2350;
+  setTimeout(()=>применитьМирКампании(куда),Math.round(длительность*.54));
+  setTimeout(()=>{
+    слой.classList.remove("on"); слой.setAttribute("aria-hidden","true");
+    переходМираИдёт=false;
+    if(готово) готово();
+  },длительность);
+}
 
 // Кампания 1–20 курируется целиком. Каждый уровень вводит или развивает одну
 // основную идею; защита и контрбустер не появляются одновременно случайно.
@@ -4706,6 +4889,7 @@ function событиеОбучения(событие){
 function новаяИгра(){
   if(РЕЖИМ_ИСПЫТАНИЯ) уровень=текущееИспытание().уровень;
   if(РЕЖИМ_БЛИЦ) уровень=УРОВНИ_БЛИЦА[блицНомерФигуры%УРОВНИ_БЛИЦА.length];
+  применитьМирКампании(уровень);
   разогрев = 3;              // новая фигура должна появиться сразу
   естьВосстановленныйБой=false;
   бойДействительноНачат=false;
@@ -4962,7 +5146,8 @@ function новаяИгра(){
     window.CUBE_LINE_DEV = {
       состояние: () => ({
         режим: РЕЖИМ_ИСПЫТАНИЯ ? "challenge" : РЕЖИМ_БЛИЦ ? "blitz" : РЕЖИМ_ЕЖЕДНЕВНЫЙ ? "daily" : РЕЖИМ_КАЛИБРОВКИ ? "calibration" : РЕЖИМ_КАМПАНИИ ? "campaign" : РЕЖИМ_PLAYTEST ? "playtest" : "single",
-        уровень, seed:текущийSeed, датаЗадачи: РЕЖИМ_ЕЖЕДНЕВНЫЙ ? ЕЖЕДНЕВНАЯ_ДАТА : null,
+        уровень, seed:текущийSeed, мир:{...мирКампании(уровень)},
+        датаЗадачи: РЕЖИМ_ЕЖЕДНЕВНЫЙ ? ЕЖЕДНЕВНАЯ_ДАТА : null,
         испытание:РЕЖИМ_ИСПЫТАНИЯ ? {номер:номерИспытания,id:текущееИспытание().id,
           имя:текущееИспытание().имя,слотов:лимитАктивныхПушек(),
           поворотов:метрикиБоя?.поворотов||0,лимитПоворотов:текущееИспытание().поворотов||null,
@@ -5008,6 +5193,10 @@ function новаяИгра(){
       отчётСтатистики: () => отчётСтатистикиКампании(),
       формы: () => ФОРМЫ.map((форма,index)=>({index,name:форма.имя,bounds:форма.r.slice()})),
       камера: () => ({масштаб:масштабКамеры,цель:целевойМасштабКамеры,z:камера.position.z}),
+      показатьПереходМира: (откуда,куда) => {
+        запуститьПереходМира(Number(откуда)||5,Number(куда)||6,()=>{});
+        return {откуда:мирКампании(откуда),куда:мирКампании(куда)};
+      },
       нормализацияФорм: цель => таблицаНормализацииФорм(цель),
       планФорм: () => планФормКампании(),
       датьКристаллы: количество => {
@@ -8306,9 +8495,11 @@ function переключитьРежимМеню(режим){
 
 function обновитьМенюКампании(){
   const последнийОткрытый=последнийОткрытыйУровеньКампании();
+  const мир=применитьМирКампании(уровень);
   $("menuLevel").textContent = кампанияЗавершена ?
     (РЕЖИМ_КАЛИБРОВКИ ? "Контрольный проход завершён" : "Кампания завершена") :
     (РЕЖИМ_КАЛИБРОВКИ ? "Калибровка " : "Уровень ")+уровень+"/"+ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА+" · "+имяФормыУровня(уровень);
+  $("menuLevel").title="Глава "+мир.глава+" · "+мир.имя;
   $("menuPrevLevel").disabled = уровень<=1;
   $("menuNextLevel").disabled = уровень>=последнийОткрытый;
   $("menuNextLevel").title = уровень>=последнийОткрытый && последнийОткрытый<ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА ?
@@ -8563,7 +8754,7 @@ function показатьГлавноеМеню(){
 
 function начатьИзМеню(){
   const меню = $("mainMenu");
-  if(меню.classList.contains("уходит")) return;
+  if(меню.classList.contains("уходит")||переходМираИдёт) return;
   if(ждёмПервуюПокупку()){
     показатьМагазин();
     return;
@@ -8589,26 +8780,33 @@ function начатьИзМеню(){
       try{ localStorage.removeItem(КЛЮЧ_КАЛИБРОВКИ); }catch(_){ }
     }
   }
-  if(РЕЖИМ_КАМПАНИИ) последнийИсходКампании=null;
-  меню.classList.add("уходит");
-  setTimeout(()=>{
-    if(естьВосстановленныйБой){
-      конец=false;
-      идётБой=false;
-      бойДействительноНачат=true;
-      началоВремени=performance.now()-сохранённоеВремяБоя*1000;
-      показатьВсё(true);
-      надоКадр=true;
-    }else{
-      ожидающийСнимокБоя=null;
-      новаяИгра();
-      бойДействительноНачат=true;
-      if(РЕЖИМ_БЛИЦ) блицСтарт=performance.now();
-      if(безопасноСохранятьБой()) записатьСохранение(true);
-    }
-    меню.classList.remove("on","уходит");
-    меню.setAttribute("aria-hidden","true");
-  }, 360);
+  const исходДоСброса=последнийИсходКампании;
+  const нуженПрыжок=РЕЖИМ_КАМПАНИИ&&!РЕЖИМ_КАЛИБРОВКИ&&!кампанияЗавершена&&
+    исходДоСброса?.победа&&переходМеждуМирами(исходДоСброса.уровень,уровень);
+  const войтиВБой=()=>{
+    if(РЕЖИМ_КАМПАНИИ) последнийИсходКампании=null;
+    меню.classList.add("уходит");
+    setTimeout(()=>{
+      if(естьВосстановленныйБой){
+        конец=false;
+        идётБой=false;
+        бойДействительноНачат=true;
+        началоВремени=performance.now()-сохранённоеВремяБоя*1000;
+        показатьВсё(true);
+        надоКадр=true;
+      }else{
+        ожидающийСнимокБоя=null;
+        новаяИгра();
+        бойДействительноНачат=true;
+        if(РЕЖИМ_БЛИЦ) блицСтарт=performance.now();
+        if(безопасноСохранятьБой()) записатьСохранение(true);
+      }
+      меню.classList.remove("on","уходит");
+      меню.setAttribute("aria-hidden","true");
+    }, 360);
+  };
+  if(нуженПрыжок) запуститьПереходМира(исходДоСброса.уровень,уровень,войтиВБой);
+  else{ применитьМирКампании(уровень); войтиВБой(); }
 }
 
 function результатБлица(){
