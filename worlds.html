@@ -1164,9 +1164,62 @@ body{display:grid; place-items:start center;
 @keyframes сеткаВПрыжке{0%{background-position:0 0,0 0;opacity:.72}75%{background-position:0 0,0 320px;opacity:.9}100%{background-position:0 0,0 480px;opacity:0}}
 @keyframes кольцоПрыжка{0%{opacity:0;transform:scale(.15)}28%{opacity:1}100%{opacity:0;transform:scale(4.2)}}
 @keyframes названиеМира{0%,34%{opacity:0;transform:scale(.86)}48%,82%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.05)}}
+
+/* ══ ЗАСТАВКА И КОРОТКИЕ ПЕРЕХОДЫ МЕЖДУ ЭКРАНАМИ ═══════════════════
+   Все эффекты конечные: после 0.8–2.4 с слой скрывается и больше ничего
+   не анимирует. Это заметно дешевле видео и не греет телефон в бою. */
+.заставка{
+  position:absolute;inset:0;z-index:42;overflow:hidden;border-radius:inherit;
+  display:grid;place-items:center;color:#f4fcff;background:#02091d;
+  opacity:0;visibility:hidden;pointer-events:none
+}
+.заставка.on{opacity:1;visibility:visible;pointer-events:auto}
+.заставка-фон{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;filter:brightness(.62) saturate(1.08)}
+.заставка-тень{position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,rgba(11,102,170,.04) 0 23%,rgba(1,8,27,.48) 66%,rgba(0,4,17,.88))}
+.заставка-кольцо{position:absolute;width:62%;aspect-ratio:1;border:1px solid rgba(120,236,255,.68);border-radius:50%;
+  box-shadow:0 0 15px rgba(47,213,255,.42),inset 0 0 24px rgba(35,176,255,.18);opacity:0}
+.заставка-кольцо::before,.заставка-кольцо::after{content:"";position:absolute;inset:-9%;border-radius:50%;
+  border:2px solid transparent;border-top-color:#55e2ff;border-bottom-color:#217cf8}
+.заставка-кольцо::after{inset:11%;border-top-color:#ffbd42;border-bottom-color:#6deaff;opacity:.72}
+.заставка-логотип{position:relative;text-align:center;text-shadow:0 4px 24px #00102f;opacity:0;transform:translateY(12px) scale(.94)}
+.заставка-логотип small{display:block;margin-bottom:7px;color:#8eeaff;font-size:8px;font-weight:700;letter-spacing:.32em;text-transform:uppercase}
+.заставка-логотип strong{display:block;font-size:39px;font-weight:600;line-height:.9;letter-spacing:.03em;text-transform:uppercase}
+.заставка-логотип strong span{color:#50ddff}
+.заставка-логотип i{display:block;width:72px;height:2px;margin:14px auto 0;border-radius:2px;background:#ffbd42;box-shadow:0 0 12px #ff9b2f}
+.заставка-подсказка{position:absolute;bottom:max(34px,calc(24px + env(safe-area-inset-bottom)));color:#b8d9eb;
+  font-size:8px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:0}
+.заставка.on .заставка-фон{animation:заставкаФон 2.4s ease-out both}
+.заставка.on .заставка-кольцо{animation:заставкаКольцо 2.25s cubic-bezier(.2,.75,.18,1) both}
+.заставка.on .заставка-кольцо::before{animation:дугиПоЧасовой 4s linear infinite}
+.заставка.on .заставка-кольцо::after{animation:дугиПротив 3.2s linear infinite}
+.заставка.on .заставка-логотип{animation:заставкаЛого 2.25s ease both}
+.заставка.on .заставка-подсказка{animation:заставкаПодсказка 2.25s ease both}
+.заставка.закрывается{animation:заставкаУходит .28s ease forwards}
+@keyframes заставкаФон{from{transform:scale(1.08);filter:brightness(.28) saturate(.8)}to{transform:scale(1);filter:brightness(.62) saturate(1.08)}}
+@keyframes заставкаКольцо{0%{opacity:0;transform:scale(.56)}28%,86%{opacity:1}100%{opacity:.3;transform:scale(1.08)}}
+@keyframes заставкаЛого{0%,18%{opacity:0;transform:translateY(12px) scale(.94)}42%,90%{opacity:1;transform:none}100%{opacity:.65}}
+@keyframes заставкаПодсказка{0%,54%{opacity:0}75%,100%{opacity:.78}}
+@keyframes заставкаУходит{to{opacity:0;transform:scale(1.025)}}
+
+.переход-экрана{position:absolute;inset:0;z-index:31;overflow:hidden;border-radius:inherit;
+  visibility:hidden;pointer-events:none;clip-path:circle(0 at 50% 43%);
+  background:radial-gradient(circle at 50% 43%,#105c94 0,#06254c 24%,#02091d 70%)}
+.переход-экрана.on{visibility:visible;pointer-events:auto;animation:диафрагмаЭкрана .78s cubic-bezier(.62,0,.28,1) both}
+.переход-экрана::before{content:"";position:absolute;left:50%;top:43%;width:44%;aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%);border:3px solid #9bf5ff;box-shadow:0 0 26px #32cfff,0 0 70px rgba(32,137,255,.62);opacity:0}
+.переход-экрана.on::before{animation:кольцоДиафрагмы .78s ease both}
+.переход-экрана::after{content:"";position:absolute;left:50%;top:43%;width:9%;aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.15);opacity:0;background:#e8fdff;
+  box-shadow:0 0 18px 7px #8eeeff,0 0 55px 22px rgba(31,177,255,.72),0 0 120px 48px rgba(31,91,255,.34)}
+.переход-экрана.on::after{animation:ядроДиафрагмы .78s ease both}
+.переход-экрана.в-меню{background:radial-gradient(circle at 50% 43%,#144d78 0,#071d40 25%,#020817 72%)}
+@keyframes диафрагмаЭкрана{0%{clip-path:circle(0 at 50% 43%)}46%,58%{clip-path:circle(145% at 50% 43%)}100%{clip-path:circle(0 at 50% 43%)}}
+@keyframes кольцоДиафрагмы{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}38%{opacity:1}64%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(5.2)}}
+@keyframes ядроДиафрагмы{0%,20%{opacity:0;transform:translate(-50%,-50%) scale(.15)}44%,58%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
 @media (prefers-reduced-motion:reduce){
   .переход-мира.on::before,.переход-мира.on .гипер-сетка,.переход-мира.on .гипер-кольца i{animation:none!important;opacity:0}
   .переход-мира.on .переход-мира-текст{animation:none!important;opacity:1}
+  .заставка.on *,.переход-экрана.on,.переход-экрана.on::before,.переход-экрана.on::after{animation:none!important}
 }
 
 /* Вращение дуг: два слоя в РАЗНЫЕ стороны, 10-14 с. */
@@ -1760,6 +1813,16 @@ body{display:grid; place-items:start center;
       <strong id="worldTransitionName">Кристаллический пояс</strong>
       <small id="worldTransitionChapter">Глава II</small>
     </div>
+  </section>
+
+  <section class="переход-экрана" id="screenTransition" aria-hidden="true"></section>
+
+  <section class="заставка" id="introSplash" aria-label="Заставка Cube Line" aria-hidden="true">
+    <img class="заставка-фон" id="introBackdrop" src="assets/worlds/nebula.jpg" alt="">
+    <div class="заставка-тень"></div>
+    <div class="заставка-кольцо"></div>
+    <div class="заставка-логотип"><small>космическая головоломка</small><strong>Cube <span>Line</span></strong><i></i></div>
+    <div class="заставка-подсказка">нажмите, чтобы продолжить</div>
   </section>
 
   <section class="главное-меню" id="mainMenu" aria-label="Главное меню">
@@ -2522,6 +2585,42 @@ function запуститьПереходМира(откуда,куда,гото
     переходМираИдёт=false;
     if(готово) готово();
   },длительность);
+}
+
+let переходЭкранаИдёт=false, таймерЗаставки=0;
+function запуститьПереходЭкрана(режим,готово){
+  const слой=$("screenTransition");
+  if(!слой||переходЭкранаИдёт){ if(!переходЭкранаИдёт&&готово) готово(); return; }
+  переходЭкранаИдёт=true;
+  слой.className="переход-экрана "+режим;
+  void слой.offsetWidth;
+  слой.classList.add("on"); слой.setAttribute("aria-hidden","false");
+  const тихо=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setTimeout(()=>{ if(готово) готово(); },тихо?60:365);
+  setTimeout(()=>{
+    слой.className="переход-экрана"; слой.setAttribute("aria-hidden","true");
+    переходЭкранаИдёт=false;
+  },тихо?140:800);
+}
+function закрытьЗаставку(соЗвуком=false){
+  const слой=$("introSplash");
+  if(!слой||!слой.classList.contains("on")) return;
+  clearTimeout(таймерЗаставки);
+  if(соЗвуком) ЗВУК.тап();
+  слой.classList.add("закрывается");
+  setTimeout(()=>{
+    слой.classList.remove("on","закрывается");
+    слой.setAttribute("aria-hidden","true");
+  },280);
+}
+function запуститьЗаставку(){
+  if(РЕЖИМ_DEV||РЕЖИМ_БЕЗ_ПОДСКАЗОК) return;
+  const слой=$("introSplash"), фон=$("introBackdrop"), мир=мирКампании(уровень);
+  if(!слой) return;
+  if(фон) фон.src=мир.фон;
+  слой.classList.remove("закрывается"); void слой.offsetWidth;
+  слой.classList.add("on"); слой.setAttribute("aria-hidden","false");
+  таймерЗаставки=setTimeout(()=>закрытьЗаставку(false),2450);
 }
 
 // Кампания 1–20 курируется целиком. Каждый уровень вводит или развивает одну
@@ -8638,7 +8737,12 @@ function показатьМагазин(){
   $("shop").classList.add("on"); $("shop").setAttribute("aria-hidden","false");
 }
 
-function показатьГлавноеМеню(){
+function показатьГлавноеМеню(немедленно=false){
+  if(немедленно!==true && переходЭкранаИдёт) return;
+  if(немедленно!==true && !РЕЖИМ_DEV && бойДействительноНачат){
+    запуститьПереходЭкрана("в-меню",()=>показатьГлавноеМеню(true));
+    return;
+  }
   // Главное меню — самостоятельный экран. Ни один диалог или карточка
   // обучения не должен оставаться поверх него после завершения/паузы боя.
   закрытьСтатистику();
@@ -8769,7 +8873,7 @@ function показатьГлавноеМеню(){
 
 function начатьИзМеню(){
   const меню = $("mainMenu");
-  if(меню.classList.contains("уходит")||переходМираИдёт) return;
+  if(меню.classList.contains("уходит")||переходМираИдёт||переходЭкранаИдёт) return;
   if(ждёмПервуюПокупку()){
     показатьМагазин();
     return;
@@ -8798,10 +8902,10 @@ function начатьИзМеню(){
   const исходДоСброса=последнийИсходКампании;
   const нуженПрыжок=РЕЖИМ_КАМПАНИИ&&!РЕЖИМ_КАЛИБРОВКИ&&!кампанияЗавершена&&
     исходДоСброса?.победа&&переходМеждуМирами(исходДоСброса.уровень,уровень);
-  const войтиВБой=()=>{
+  const войтиВБой=(безПортала=false)=>{
     if(РЕЖИМ_КАМПАНИИ) последнийИсходКампании=null;
     меню.classList.add("уходит");
-    setTimeout(()=>{
+    const открытьБой=()=>{
       if(естьВосстановленныйБой){
         конец=false;
         идётБой=false;
@@ -8818,9 +8922,12 @@ function начатьИзМеню(){
       }
       меню.classList.remove("on","уходит");
       меню.setAttribute("aria-hidden","true");
-    }, 360);
+    };
+    if(безПортала) открытьБой();
+    else if(РЕЖИМ_DEV) setTimeout(открытьБой,360);
+    else запуститьПереходЭкрана("в-бой",открытьБой);
   };
-  if(нуженПрыжок) запуститьПереходМира(исходДоСброса.уровень,уровень,войтиВБой);
+  if(нуженПрыжок) запуститьПереходМира(исходДоСброса.уровень,уровень,()=>войтиВБой(true));
   else{ применитьМирКампании(уровень); войтиВБой(); }
 }
 
@@ -9125,7 +9232,10 @@ if(РЕЖИМ_DEV){
 // сам подписывается на requestAnimationFrame. Это также надёжно работает в
 // WebView, где первый rAF иногда ждёт внешнего события.
 кадр(performance.now());
-if(!РЕЖИМ_DEV && !РЕЖИМ_БЕЗ_ПОДСКАЗОК) показатьГлавноеМеню();
+if(!РЕЖИМ_DEV && !РЕЖИМ_БЕЗ_ПОДСКАЗОК){
+  показатьГлавноеМеню();
+  setTimeout(запуститьЗаставку,60);
+}
 else if(РЕЖИМ_БЕЗ_ПОДСКАЗОК){
   $("mainMenu").classList.remove("on","уходит");
   $("mainMenu").setAttribute("aria-hidden","true");
@@ -9173,6 +9283,7 @@ const холст = $("scene");
 
 $("btnNew").addEventListener("click", показатьГлавноеМеню);
 $("menuPlay").addEventListener("click", начатьИзМеню);
+$("introSplash").addEventListener("click",()=>закрытьЗаставку(true));
 $("menuCampaignMode").addEventListener("click",()=>{
   if(РЕЖИМ_ЕЖЕДНЕВНЫЙ || РЕЖИМ_БЛИЦ || РЕЖИМ_ИСПЫТАНИЯ){ ЗВУК.тап(); переключитьРежимМеню("campaign"); }
 });
