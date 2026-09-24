@@ -483,7 +483,8 @@ body{display:grid; place-items:start center;
 .queue{display:flex; gap:7px; justify-content:center; padding:4px 12px 2px;
   align-items:flex-start; position:relative; z-index:2; flex:none;
   height:calc((3 * 38px + 2 * 15px + 18px) * var(--мф));
-  box-sizing:content-box}
+  box-sizing:content-box;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.queue .qcol,.queue .qchip{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 /* Колонка идёт СВЕРХУ ВНИЗ: запас наверху, активный внизу — вплотную
    к пушкам, куда он и подаётся. Раньше стоял column-reverse, из-за
    него активный оказывался внизу списка, а сверху рисовались
@@ -1543,6 +1544,8 @@ body{display:grid; place-items:start center;
 .game #г-пол stop:last-child{stop-color:var(--мир-пол-низ)}
 .game .орбиты ellipse,.game .дуги-б circle{stroke:var(--мир-второй)}
 .game .дуги-а circle,.game .кольцо{stroke:var(--мир-акцент)}
+.game #г-шов stop{stop-color:var(--мир-космос-низ)}
+.фон-шов{opacity:.78;pointer-events:none}
 .фон-мира-арт{opacity:.94;transition:opacity .45s ease}
 .фон-мира-заливка{opacity:.2}
 .game .звёзды{opacity:.32}
@@ -1902,6 +1905,15 @@ body{display:grid; place-items:start center;
         <stop offset="0" stop-color="#0A1A3E"/>
         <stop offset="1" stop-color="#05102A"/>
       </linearGradient>
+      <!-- Мягкая атмосферная полоса скрывает технический стык нижней
+           части растровых фонов. Цвет автоматически берётся из мира. -->
+      <linearGradient id="г-шов" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-opacity="0"/>
+        <stop offset=".34" stop-opacity=".3"/>
+        <stop offset=".5" stop-opacity=".88"/>
+        <stop offset=".66" stop-opacity=".3"/>
+        <stop offset="1" stop-opacity="0"/>
+      </linearGradient>
       <radialGradient id="г-виньетка">
         <stop offset=".62" stop-color="#00091C" stop-opacity="0"/>
         <stop offset="1"   stop-color="#00091C" stop-opacity=".42"/>
@@ -1925,6 +1937,7 @@ body{display:grid; place-items:start center;
          уровня, поэтому браузер не декодирует четыре большие картинки сразу. -->
     <image id="worldBackdrop" class="фон-мира-арт" x="0" y="-225" width="390" height="1085"
            preserveAspectRatio="xMidYMid slice" href="assets/worlds/nebula.jpg"/>
+    <rect class="фон-шов" x="0" y="455" width="390" height="128" fill="url(#г-шов)"/>
 
     <!-- ── 1. Глубокий космос ─────────────────────────────────────── -->
     <rect class="фон-мира-заливка" width="390" height="860" fill="url(#г-космос)"/>
@@ -9785,6 +9798,13 @@ if(СОХРАНЕНИЕ_ДОСТУПНО){
 }
 
 const холст = $("scene");
+const зонаБоезапаса = $("queue");
+// На iOS серия быстрых нажатий по зарядам иногда распознаётся браузером
+// как double-tap/pinch zoom. В боевой сцене масштабирование оставляем,
+// но внутри очереди любой браузерный жест масштаба должен быть погашен.
+["dblclick","gesturestart","gesturechange"].forEach(тип=>
+  зонаБоезапаса.addEventListener(тип,событие=>событие.preventDefault(),{passive:false})
+);
 // ⚠️ Только Pointer Events и только НА ХОЛСТЕ.
 // Раньше pointermove висел на window и звал preventDefault() — любое
 // движение указателя над кнопкой гасило нажатие, кнопки не работали.
