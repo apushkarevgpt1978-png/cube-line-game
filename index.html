@@ -4970,8 +4970,8 @@ function создатьИнстансы(сколько){
   инстЛучиЩита.count=0; инстЛучиЩита.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
   инстЛучиЩита.renderOrder=12; группа.add(инстЛучиЩита);
 
-  // Охотник — не предмет внутри кубика. На открытой грани выжжено плоское
-  // гнездо с прицелом: тёмная выемка, малиновое кольцо и горячая точка.
+  // Охотник — не предмет внутри кубика. На открытой грани выжжен плоский
+  // знак опасности: тёмное гнездо, белый силуэт бомбы и горячая искра.
   // Все три слоя лежат в плоскости грани и вращаются вместе с фигурой —
   // никакого отдельного ромба, который мог бы выглядеть приклеенным сверху.
   const матГнездаОхотника=new THREE.MeshBasicMaterial({
@@ -4980,18 +4980,43 @@ function создатьИнстансы(сколько){
     polygonOffset:true,polygonOffsetFactor:-3,polygonOffsetUnits:-3
   });
   const матОхотника=new THREE.MeshBasicMaterial({
-    color:0xff205c,toneMapped:false,transparent:true,opacity:1,
+    color:0xf4fbff,toneMapped:false,transparent:true,opacity:1,
     blending:THREE.NormalBlending,depthWrite:false,depthTest:true,side:THREE.DoubleSide,
     polygonOffset:true,polygonOffsetFactor:-5,polygonOffsetUnits:-5
   });
   const матЦентраОхотника=new THREE.MeshBasicMaterial({
-    color:0xffd6e2,toneMapped:false,transparent:true,opacity:1,
+    color:0xff385f,toneMapped:false,transparent:true,opacity:1,
     blending:THREE.NormalBlending,depthWrite:false,depthTest:true,side:THREE.DoubleSide,
     polygonOffset:true,polygonOffsetFactor:-6,polygonOffsetUnits:-6
   });
   const геомГнездаОхотника=new THREE.CircleGeometry(.39,24);
-  const геомОхотника=new THREE.RingGeometry(.20,.33,24,1);
-  const геомЦентраОхотника=new THREE.CircleGeometry(.095,16);
+  // Силуэт собирается одной геометрией из нескольких плоских Shape:
+  // круглое ядро, шейка и ломаный фитиль. Так знак читается как бомба даже
+  // на маленьком экране и не добавляет отдельный draw call на каждую деталь.
+  const телоБомбы=new THREE.Shape();
+  телоБомбы.absarc(-.055,-.055,.225,0,Math.PI*2,false);
+  const шейкаБомбы=new THREE.Shape();
+  шейкаБомбы.moveTo(.075,.105); шейкаБомбы.lineTo(.125,.165);
+  шейкаБомбы.lineTo(.205,.105); шейкаБомбы.lineTo(.145,.045);
+  шейкаБомбы.closePath();
+  const фитильБомбыА=new THREE.Shape();
+  фитильБомбыА.moveTo(.145,.145); фитильБомбыА.lineTo(.185,.18);
+  фитильБомбыА.lineTo(.255,.235); фитильБомбыА.lineTo(.225,.27);
+  фитильБомбыА.lineTo(.15,.21); фитильБомбыА.lineTo(.115,.18);
+  фитильБомбыА.closePath();
+  const фитильБомбыБ=new THREE.Shape();
+  фитильБомбыБ.moveTo(.235,.225); фитильБомбыБ.lineTo(.325,.205);
+  фитильБомбыБ.lineTo(.335,.25); фитильБомбыБ.lineTo(.255,.27);
+  фитильБомбыБ.closePath();
+  const искраБомбы=new THREE.Shape();
+  искраБомбы.moveTo(.35,.19); искраБомбы.lineTo(.375,.225);
+  искраБомбы.lineTo(.42,.235); искраБомбы.lineTo(.382,.265);
+  искраБомбы.lineTo(.39,.31); искраБомбы.lineTo(.35,.282);
+  искраБомбы.lineTo(.31,.31); искраБомбы.lineTo(.318,.265);
+  искраБомбы.lineTo(.28,.235); искраБомбы.lineTo(.325,.225);
+  искраБомбы.closePath();
+  const геомОхотника=new THREE.ShapeGeometry([телоБомбы,шейкаБомбы,фитильБомбыА,фитильБомбыБ]);
+  const геомЦентраОхотника=new THREE.ShapeGeometry(искраБомбы);
   инстГнёздаОхотников=new THREE.InstancedMesh(геомГнездаОхотника,матГнездаОхотника,вместимостьИнстансов);
   инстОхотникиПушек=new THREE.InstancedMesh(геомОхотника,матОхотника,вместимостьИнстансов);
   инстЦентрыОхотников=new THREE.InstancedMesh(геомЦентраОхотника,матЦентраОхотника,вместимостьИнстансов);
