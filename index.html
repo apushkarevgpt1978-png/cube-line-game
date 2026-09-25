@@ -81,7 +81,7 @@ body{display:grid; place-items:start center;
   box-shadow:0 24px 70px rgba(2,7,25,.6),
              inset 0 1px rgba(120,190,255,.22),
              0 0 40px rgba(40,110,220,.18);
-  position:relative; overflow:hidden;
+  position:relative; overflow:hidden; touch-action:none;
   /* ⚠️ РОВНО пять строк — по числу детей: topbar, hud, stage, slots,
      queue. Раньше их было четыре, пятый ребёнок создавал неявную
      строку и отбирал высоту у сцены — фигура выходила крошечной. */
@@ -3256,11 +3256,11 @@ function долиПомех(уровень){
 const ПАРАМЕТРЫ_URL = new URLSearchParams(location.search);
 const РЕЖИМ_DEV = ПАРАМЕТРЫ_URL.has("dev");
 // Телефон нельзя нагружать как настольную видеокарту. На Retina уже при
-// DPR 1.5 WebGL рисовал почти миллион пикселей, а аппаратный MSAA умножал
-// эту работу ещё примерно в четыре раза. Внешне разница на плотном экране
-// мала, зато длительный бой заметно нагревал даже iPhone 16 Pro.
+// DPR выше 1.25 заметно увеличивает нагрев Retina. Ниже 1.25 грани уже
+// распадаются на крупные пиксели. Оставляем чёткий компромисс без MSAA:
+// это дешевле аппаратного сглаживания, но не превращает кубики в мозаику.
 const МОБИЛЬНЫЙ_ЭНЕРГОПРОФИЛЬ = matchMedia("(pointer: coarse)").matches;
-const ПЛОТНОСТЬ_РЕНДЕРА = МОБИЛЬНЫЙ_ЭНЕРГОПРОФИЛЬ ? 1.0 : 1.5;
+const ПЛОТНОСТЬ_РЕНДЕРА = МОБИЛЬНЫЙ_ЭНЕРГОПРОФИЛЬ ? 1.25 : 1.5;
 const ИСПЫТАНИЯ = [
   {id:"three-cannons",имя:"Три пушки",правило:"В строю только три пушки — планируйте свободные места.",
     hud:"3 ПУШКИ",уровень:6,слотов:3},
@@ -8556,7 +8556,24 @@ function показатьОчередь(){
       const можно = активный && !бз.добывается &&
                     (мгновенный || первыйСвободныйСлот() >= 0);
       к.disabled = !можно;
-      if(можно) к.addEventListener("click", ()=>взять(номер));
+      if(можно){
+        // На телефоне действие выполняем прямо на touchend и гасим его до
+        // системного click. Safari уже не соберёт два быстрых выстрела в
+        // жест увеличения страницы, а заряд всё равно сработает сразу.
+        let обработаноКасанием=false;
+        к.addEventListener("touchend",событие=>{
+          if(событие.changedTouches.length!==1) return;
+          обработаноКасанием=true;
+          событие.preventDefault();
+          событие.stopPropagation();
+          взять(номер);
+        },{passive:false});
+        к.addEventListener("click",событие=>{
+          if(обработаноКасанием || событие.pointerType==="touch" ||
+             событие.sourceCapabilities?.firesTouchEvents) return;
+          взять(номер);
+        });
+      }
       д.appendChild(к);
     });
     у.appendChild(д);
@@ -9985,31 +10002,26 @@ const зоныБоезапасаБезЗума = [$("slots"),$("queue"),$("qhint
   )
 );
 
-// Важный случай iOS: после первого выстрела элемент .qchip удалён из DOM,
-// поэтому второй тап той же серии приходит уже в фон панели. Ловим его по
-// КООРДИНАТАМ всей зоны боезапаса, а не по исчезающему target. Нажатия по
-// живым зарядам не гасим — быстро стрелять несколькими зарядами по-прежнему
-// можно; preventDefault нужен только пустому месту, запускавшему zoom.
-const играБезЗума = document.querySelector(".game");
+// После первого выстрела .qchip удаляется из DOM, поэтому touchend может
+// прийти уже в пустое место. Действие заряда выполнено раньше на pointerup,
+// а системный touchend в пределах всей панели всегда гасим. Так Safari не
+// получает ни первого, ни второго системного тапа и не включает page zoom.
 function точкаВБоезапасе(касание){
   const верх = $("slots").getBoundingClientRect().top;
   const низ = $("qhint").getBoundingClientRect().bottom;
-  const рамка = играБезЗума.getBoundingClientRect();
+  const рамка = document.querySelector(".game").getBoundingClientRect();
   return касание.clientX >= рамка.left && касание.clientX <= рамка.right &&
     касание.clientY >= верх && касание.clientY <= низ;
 }
-function пустоеМестоБоезапаса(событие){
-  const касание = событие.changedTouches?.[0] || событие.touches?.[0];
-  if(!касание || !точкаВБоезапасе(касание)) return false;
-  const цель = document.elementFromPoint(касание.clientX,касание.clientY);
-  return !цель?.closest(".qchip");
-}
-["touchstart","touchend"].forEach(тип=>
-  играБезЗума.addEventListener(тип,событие=>{
-    if(событие.touches.length > 1 || пустоеМестоБоезапаса(событие))
-      событие.preventDefault();
-  },{capture:true,passive:false})
-);
+document.addEventListener("touchend",событие=>{
+  const касание=событие.changedTouches?.[0];
+  if(касание&&точкаВБоезапасе(касание)) событие.preventDefault();
+},{capture:true,passive:false});
+document.addEventListener("touchstart",событие=>{
+  const касание=событие.touches?.[0];
+  if(событие.touches.length>1 && касание&&точкаВБоезапасе(касание))
+    событие.preventDefault();
+},{capture:true,passive:false});
 
 // SVG SMIL-анимации звёзд не подчиняются CSS media query и продолжали
 // постоянно будить композитор Safari. На мобильном оставляем звёзды в их
