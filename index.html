@@ -858,6 +858,18 @@ body{display:grid; place-items:start center;
 .блиц-hud[hidden]{display:none}
 .испытание-hud{margin-left:8px;color:#ffe27a;font-variant-numeric:tabular-nums}
 .испытание-hud[hidden]{display:none}
+.мастерство-hud{display:flex;align-items:center;gap:5px;margin-left:2px;padding:2px 7px 2px 3px;
+  border:1px solid rgba(112,226,255,.25);border-radius:999px;color:#b9d9eb;background:rgba(3,20,53,.58);
+  font-size:10px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.мастерство-hud[hidden]{display:none}
+.мастерство-hud b{width:21px;height:21px;display:grid;place-items:center;border-radius:50%;color:#071a3a;
+  background:#74e7ff;box-shadow:0 0 9px rgba(83,221,255,.48);font-size:13px;font-weight:900;line-height:1}
+.мастерство-hud[data-rank="S"]{border-color:rgba(255,224,98,.4);color:#ffeaa0}
+.мастерство-hud[data-rank="S"] b{background:#ffe36e;box-shadow:0 0 11px rgba(255,211,62,.5)}
+.мастерство-hud[data-rank="B"]{border-color:rgba(182,153,255,.34);color:#d7caff}
+.мастерство-hud[data-rank="B"] b{color:#f2edff;background:#7456c9;box-shadow:0 0 10px rgba(150,112,255,.42)}
+.мастерство-hud.ранг-снижен{animation:рангСнижен .5s ease-out}
+@keyframes рангСнижен{0%{transform:scale(1)}35%{transform:scale(1.13);filter:brightness(1.65)}100%{transform:scale(1);filter:none}}
 .меню-выбор-уровня{display:flex;align-items:center;justify-content:center;gap:7px}
 .меню-кошелёк{
   display:flex;align-items:center;gap:4px;min-width:48px;padding:5px 8px;border-radius:999px;
@@ -2256,6 +2268,7 @@ body{display:grid; place-items:start center;
     <span>Кубиков <b id="cnt">0</b></span>
     <span class="блиц-hud" id="blitzHud" hidden>Очки <b id="blitzScore">0</b> · ×<b id="blitzMultiplier">1</b></span>
     <span class="испытание-hud" id="challengeHud" hidden></span>
+    <span class="мастерство-hud" id="masteryHud" hidden><b id="masteryRank">S</b><span id="masteryGoal">0/3 пов. · 5/5 пушек</span></span>
     <span class="spacer"></span>
     <span id="clock">00:00</span>
   </div>
@@ -3846,6 +3859,31 @@ function обновитьHudИспытания(){
   if(!РЕЖИМ_ИСПЫТАНИЯ) return;
   const лимит=текущееИспытание().поворотов;
   э.textContent=лимит ? "Повороты "+(метрикиБоя?.поворотов||0)+"/"+лимит : текущееИспытание().hud;
+}
+function обновитьHudМастерства(){
+  const панель=$("masteryHud");
+  const показывать=РЕЖИМ_КАМПАНИИ&&!РЕЖИМ_КАЛИБРОВКИ&&!РЕЖИМ_PLAYTEST;
+  панель.hidden=!показывать;
+  if(!показывать) return;
+  const данные=Object.assign({},метрикиБоя||{уровень,поворотов:0,потеряноПушек:0},{победа:true});
+  const оценка=оценитьМастерствоКампании(данные,уровень);
+  const прежний=панель.dataset.rank;
+  const вес={S:3,A:2,B:1};
+  if(прежний&&вес[оценка.ранг]<вес[прежний]){
+    панель.classList.remove("ранг-снижен");
+    void панель.offsetWidth;
+    панель.classList.add("ранг-снижен");
+  }
+  панель.dataset.rank=оценка.ранг;
+  $("masteryRank").textContent=оценка.ранг;
+  const предел=оценка.ранг==="S" ? оценка.пар : оценка.ранг==="A" ? оценка.допуск : null;
+  const пушки=Math.max(0,СЛОТОВ-оценка.потеряно);
+  $("masteryGoal").textContent=(предел ? оценка.повороты+"/"+предел : оценка.повороты)+
+    " пов. · "+пушки+"/"+СЛОТОВ+" пушек";
+  панель.title=оценка.ранг==="S" ?
+    "Ранг S: не более "+оценка.пар+" поворотов и сохранить все пушки" :
+    оценка.ранг==="A" ? "Ранг A: не более "+оценка.допуск+" поворотов и потерять не более одной пушки" :
+    "Ранг B сохранится после победы. Улучшите маршрут при повторном прохождении";
 }
 
 function безопасноСохранятьБой(){
@@ -6035,6 +6073,7 @@ function новаяИгра(){
   показатьВсё(true);            // новая фигура — рисуем в любом случае
   обновитьHudБлица();
   обновитьHudИспытания();
+  обновитьHudМастерства();
   if(РЕЖИМ_БЛИЦ && !блицАктивен) $("clock").textContent="01:30";
   requestAnimationFrame(()=>панелиБоя.forEach(э=>э.classList.remove("без-перехода")));
   const режимЩита=ПАРАМЕТРЫ_URL.get("shield");
@@ -7559,6 +7598,7 @@ function уничтожитьПушку(номер,точкаУдара){
   уничтоженныеПушки.add(номер);
   пушкиПодОтветом.delete(номер);
   if(метрикиБоя) метрикиБоя.потеряноПушек=(метрикиБоя.потеряноПушек||0)+1;
+  обновитьHudМастерства();
   взрыв(точкаУдара,"red");
   тряхнуть(.075); замирание=Math.max(замирание,.065);
   реакцияФона("ракета",360);
@@ -8415,6 +8455,7 @@ function отпустить(e){
     метрикиБоя.поворотов++;
     метрикиБоя.путьТяги=0;
     обновитьHudИспытания();
+    обновитьHudМастерства();
   }
   тянем = false;
   // Карточка больше не возникает под удерживаемым пальцем: заканчиваем
