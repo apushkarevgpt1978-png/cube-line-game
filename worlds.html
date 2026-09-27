@@ -1378,6 +1378,8 @@ body{display:grid; place-items:start center;
   width:min(322px,88vw);margin-top:8px;padding:0;border:0;border-radius:0;color:#d5eff9;background:none;
   box-shadow:none;font-size:12px;font-weight:700;line-height:1.35;text-align:center;text-shadow:0 2px 10px #00102e;backdrop-filter:none
 }
+.миссия-цель{display:block}
+.миссия-рекорд{display:block;margin-top:5px;color:#73ddff;font-size:11px;font-weight:800;letter-spacing:.025em}
 .меню-играть{
   order:3;position:relative;width:248px;height:84px;min-height:84px;margin:15px 0 0;padding:0 25px;overflow:hidden;
   display:flex;flex-direction:row;align-items:center;justify-content:center;gap:13px;border:1px solid var(--меню-линия);border-radius:22px;clip-path:none;
@@ -9186,7 +9188,10 @@ function обновитьФормуВыбораКампании(){
   $("campaignPickerPrev").disabled=уровеньВВыбореКампании<=1;
   $("campaignPickerNext").disabled=уровеньВВыбореКампании>=последнийОткрытый;
   const этоТекущий=уровеньВВыбореКампании===уровень;
-  $("campaignPickerState").textContent=уровеньВВыбореКампании<=максимумПройден ? "Уровень пройден" :
+  const лучший=лучшийРезультатКампании(уровеньВВыбореКампании);
+  $("campaignPickerState").textContent=лучший ?
+    "Лучший результат · "+лучший.поворотов+" пов. · "+лучший.секунд+" с" :
+    уровеньВВыбореКампании<=максимумПройден ? "Уровень пройден" :
     этоТекущий&&естьВосстановленныйБой ? "Бой сохранён — прогресс будет продолжен" : "Уровень доступен";
   $("campaignPickerApply").textContent=этоТекущий&&естьВосстановленныйБой ? "Продолжить уровень" :
     этоТекущий ? "Остаться на уровне" : "Выбрать уровень";
@@ -9278,7 +9283,17 @@ function выбратьУровеньКампании(сдвиг){
 
 function показатьБрифингКампании(элемент,номер=уровень){
   элемент.replaceChildren();
-  элемент.textContent=фокусМиссииКампании(номер);
+  const цель=document.createElement("span");
+  цель.className="миссия-цель";
+  цель.textContent=фокусМиссииКампании(номер);
+  элемент.appendChild(цель);
+  const лучший=лучшийРезультатКампании(номер);
+  if(лучший){
+    const рекорд=document.createElement("span");
+    рекорд.className="миссия-рекорд";
+    рекорд.textContent="Личный лучший · "+лучший.поворотов+" пов. · "+лучший.секунд+" с";
+    элемент.appendChild(рекорд);
+  }
   элемент.classList.remove("серия","итог-боя","итог-боя-поражение");
   элемент.classList.add("on","миссия-брифинг");
 }
