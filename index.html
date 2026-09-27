@@ -858,18 +858,6 @@ body{display:grid; place-items:start center;
 .блиц-hud[hidden]{display:none}
 .испытание-hud{margin-left:8px;color:#ffe27a;font-variant-numeric:tabular-nums}
 .испытание-hud[hidden]{display:none}
-.мастерство-hud{display:flex;align-items:center;gap:5px;margin-left:2px;padding:2px 7px 2px 3px;
-  border:1px solid rgba(112,226,255,.25);border-radius:999px;color:#b9d9eb;background:rgba(3,20,53,.58);
-  font-size:10px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.мастерство-hud[hidden]{display:none}
-.мастерство-hud b{width:21px;height:21px;display:grid;place-items:center;border-radius:50%;color:#071a3a;
-  background:#74e7ff;box-shadow:0 0 9px rgba(83,221,255,.48);font-size:13px;font-weight:900;line-height:1}
-.мастерство-hud[data-rank="S"]{border-color:rgba(255,224,98,.4);color:#ffeaa0}
-.мастерство-hud[data-rank="S"] b{background:#ffe36e;box-shadow:0 0 11px rgba(255,211,62,.5)}
-.мастерство-hud[data-rank="B"]{border-color:rgba(182,153,255,.34);color:#d7caff}
-.мастерство-hud[data-rank="B"] b{color:#f2edff;background:#7456c9;box-shadow:0 0 10px rgba(150,112,255,.42)}
-.мастерство-hud.ранг-снижен{animation:рангСнижен .5s ease-out}
-@keyframes рангСнижен{0%{transform:scale(1)}35%{transform:scale(1.13);filter:brightness(1.65)}100%{transform:scale(1);filter:none}}
 .меню-выбор-уровня{display:flex;align-items:center;justify-content:center;gap:7px}
 .меню-кошелёк{
   display:flex;align-items:center;gap:4px;min-width:48px;padding:5px 8px;border-radius:999px;
@@ -1382,23 +1370,9 @@ body{display:grid; place-items:start center;
 .меню-результат{order:4;width:min(310px,84vw);margin:10px 0 0;padding:7px 11px;border:1px solid rgba(119,224,255,.2);border-radius:14px;
   color:#c7e3f1;background:rgba(2,15,43,.64);box-shadow:0 8px 24px rgba(0,5,24,.28);text-shadow:0 2px 9px #00102e;font-size:11px;line-height:1.45;backdrop-filter:blur(8px)}
 .меню-результат.серия,.меню-результат.итог-боя{width:min(340px,92vw);padding:8px 9px;background:rgba(2,13,40,.82)}
-.итог-боя-верх{display:flex;align-items:center;justify-content:center;gap:13px;min-height:42px}
-.итог-боя-верх .итог-боя-заголовок{max-width:220px;text-align:left}
 .меню-результат .итог-боя-заголовок{font-size:14px}
-.итог-боя-ранг{width:48px;height:42px;flex:none;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px;padding:0 8px;
-  border:1px solid rgba(125,226,255,.5);border-radius:12px;color:#dff8ff;background:rgba(15,88,145,.5);
-  box-shadow:inset 0 1px rgba(255,255,255,.16),0 0 15px rgba(55,206,255,.18)}
-.итог-боя-ранг span{font-size:7px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
-.итог-боя-ранг b{font-size:27px;line-height:1;font-weight:900}
-.итог-боя-ранг.ранг-s{border-color:#ffe36e;color:#fff3a6;background:rgba(125,84,5,.48);box-shadow:inset 0 1px rgba(255,255,255,.2),0 0 18px rgba(255,210,48,.28)}
-.итог-боя-ранг.ранг-a{border-color:#65ecff;color:#bff8ff}
-.итог-боя-ранг.ранг-b{border-color:#b49aff;color:#dcd0ff;background:rgba(62,43,123,.46)}
 .меню-результат .итог-боя-метрика b{font-size:20px}
 .меню-результат .итог-боя-метрика span{margin-top:5px;font-size:9px}
-.итог-боя-мастерство{margin-top:7px;padding:6px 8px;border-radius:9px;color:#aeefff;background:rgba(31,132,190,.18);
-  border:1px solid rgba(102,224,255,.18);font-size:9px;font-weight:700;line-height:1.3}
-.итог-боя-мастерство.ранг-s{color:#ffe989;background:rgba(155,103,4,.16);border-color:rgba(255,221,91,.25)}
-.итог-боя-мастерство.ранг-b{color:#cfbeff;background:rgba(89,59,159,.17);border-color:rgba(179,151,255,.24)}
 .меню-результат .итог-боя-рекорд{font-size:10px}
 .меню-результат.миссия-брифинг{
   width:min(322px,88vw);margin-top:8px;padding:0;border:0;border-radius:0;color:#d5eff9;background:none;
@@ -2268,7 +2242,6 @@ body{display:grid; place-items:start center;
     <span>Кубиков <b id="cnt">0</b></span>
     <span class="блиц-hud" id="blitzHud" hidden>Очки <b id="blitzScore">0</b> · ×<b id="blitzMultiplier">1</b></span>
     <span class="испытание-hud" id="challengeHud" hidden></span>
-    <span class="мастерство-hud" id="masteryHud" hidden><b id="masteryRank">S</b><span id="masteryGoal">0/3 пов. · 5/5 пушек</span></span>
     <span class="spacer"></span>
     <span id="clock">00:00</span>
   </div>
@@ -3859,31 +3832,6 @@ function обновитьHudИспытания(){
   if(!РЕЖИМ_ИСПЫТАНИЯ) return;
   const лимит=текущееИспытание().поворотов;
   э.textContent=лимит ? "Повороты "+(метрикиБоя?.поворотов||0)+"/"+лимит : текущееИспытание().hud;
-}
-function обновитьHudМастерства(){
-  const панель=$("masteryHud");
-  const показывать=РЕЖИМ_КАМПАНИИ&&!РЕЖИМ_КАЛИБРОВКИ&&!РЕЖИМ_PLAYTEST;
-  панель.hidden=!показывать;
-  if(!показывать) return;
-  const данные=Object.assign({},метрикиБоя||{уровень,поворотов:0,потеряноПушек:0},{победа:true});
-  const оценка=оценитьМастерствоКампании(данные,уровень);
-  const прежний=панель.dataset.rank;
-  const вес={S:3,A:2,B:1};
-  if(прежний&&вес[оценка.ранг]<вес[прежний]){
-    панель.classList.remove("ранг-снижен");
-    void панель.offsetWidth;
-    панель.classList.add("ранг-снижен");
-  }
-  панель.dataset.rank=оценка.ранг;
-  $("masteryRank").textContent=оценка.ранг;
-  const предел=оценка.ранг==="S" ? оценка.пар : оценка.ранг==="A" ? оценка.допуск : null;
-  const пушки=Math.max(0,СЛОТОВ-оценка.потеряно);
-  $("masteryGoal").textContent=(предел ? оценка.повороты+"/"+предел : оценка.повороты)+
-    " пов. · "+пушки+"/"+СЛОТОВ+" пушек";
-  панель.title=оценка.ранг==="S" ?
-    "Ранг S: не более "+оценка.пар+" поворотов и сохранить все пушки" :
-    оценка.ранг==="A" ? "Ранг A: не более "+оценка.допуск+" поворотов и потерять не более одной пушки" :
-    "Ранг B сохранится после победы. Улучшите маршрут при повторном прохождении";
 }
 
 function безопасноСохранятьБой(){
@@ -6073,7 +6021,6 @@ function новаяИгра(){
   показатьВсё(true);            // новая фигура — рисуем в любом случае
   обновитьHudБлица();
   обновитьHudИспытания();
-  обновитьHudМастерства();
   if(РЕЖИМ_БЛИЦ && !блицАктивен) $("clock").textContent="01:30";
   requestAnimationFrame(()=>панелиБоя.forEach(э=>э.classList.remove("без-перехода")));
   const режимЩита=ПАРАМЕТРЫ_URL.get("shield");
@@ -7598,7 +7545,6 @@ function уничтожитьПушку(номер,точкаУдара){
   уничтоженныеПушки.add(номер);
   пушкиПодОтветом.delete(номер);
   if(метрикиБоя) метрикиБоя.потеряноПушек=(метрикиБоя.потеряноПушек||0)+1;
-  обновитьHudМастерства();
   взрыв(точкаУдара,"red");
   тряхнуть(.075); замирание=Math.max(замирание,.065);
   реакцияФона("ракета",360);
@@ -8455,7 +8401,6 @@ function отпустить(e){
     метрикиБоя.поворотов++;
     метрикиБоя.путьТяги=0;
     обновитьHudИспытания();
-    обновитьHudМастерства();
   }
   тянем = false;
   // Карточка больше не возникает под удерживаемым пальцем: заканчиваем
@@ -9042,58 +8987,17 @@ function среднее(массив,ключ){
   return массив.length ? массив.reduce((с,р)=>с+(Number(р[ключ])||0),0)/массив.length : 0;
 }
 
-// Мастерство оценивает не скорость тапов, а качество решения: сколько
-// осмысленных поворотов сделано и сохранены ли пушки. Бустеры ранг не снижают:
-// они зарабатываются и покупаются именно для более чистого прохода.
-const ПАР_ПОВОРОТОВ_КАМПАНИИ = [0,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,9,9,11,12,13];
-function оценитьМастерствоКампании(результат,номер=Number(результат?.уровень)||уровень){
-  const пар=ПАР_ПОВОРОТОВ_КАМПАНИИ[номер]||Math.max(3,Math.ceil(номер*.55)+2);
-  const допуск=пар+Math.max(3,Math.ceil(пар*.45));
-  const повороты=Math.max(0,Math.floor(Number(результат?.поворотов)||0));
-  const потеряно=Math.max(0,Math.floor(Number(результат?.потеряноПушек)||0));
-  if(!результат?.победа) return {ранг:"—",очки:0,пар,допуск,повороты,потеряно};
-  if(повороты<=пар && потеряно===0)
-    return {ранг:"S",очки:3,пар,допуск,повороты,потеряно};
-  if(повороты<=допуск && потеряно<=1)
-    return {ранг:"A",очки:2,пар,допуск,повороты,потеряно};
-  return {ранг:"B",очки:1,пар,допуск,повороты,потеряно};
-}
-function текстДоСледующегоРанга(оценка){
-  if(оценка.ранг==="S") return "Чистый проход · все пушки сохранены";
-  if(оценка.потеряно>0)
-    return "До S: сохраните все пушки и уложитесь в "+оценка.пар+" поворотов";
-  if(оценка.ранг==="A") return "До S: не более "+оценка.пар+" поворотов";
-  return "До A: не более "+оценка.допуск+" поворотов и не более одной потерянной пушки";
-}
 function лучшеРезультатКампании(новый,старый){
   if(!старый) return true;
-  const рангНового=оценитьМастерствоКампании(новый).очки;
-  const рангСтарого=оценитьМастерствоКампании(старый).очки;
-  if(рангНового!==рангСтарого) return рангНового>рангСтарого;
   return (Number(новый.поворотов)||0)<(Number(старый.поворотов)||0) ||
     ((Number(новый.поворотов)||0)===(Number(старый.поворотов)||0) &&
-      ((Number(новый.потеряноПушек)||0)<(Number(старый.потеряноПушек)||0) ||
-       ((Number(новый.потеряноПушек)||0)===(Number(старый.потеряноПушек)||0) &&
-        ((Number(новый.секунд)||0)<(Number(старый.секунд)||0) ||
+      ((Number(новый.секунд)||0)<(Number(старый.секунд)||0) ||
        ((Number(новый.секунд)||0)===(Number(старый.секунд)||0) &&
-        (Number(новый.бустеров)||0)<(Number(старый.бустеров)||0))))));
+        (Number(новый.бустеров)||0)<(Number(старый.бустеров)||0))));
 }
 function лучшийРезультатКампании(номер){
   return прочитатьМетрикиКампании().filter(р=>р.победа&&Number(р.уровень)===Number(номер))
     .sort((а,б)=>лучшеРезультатКампании(а,б)?-1:лучшеРезультатКампании(б,а)?1:0)[0]||null;
-}
-function сводкаМастерстваКампании(){
-  const лучшие=new Map();
-  прочитатьМетрикиКампании().forEach(результат=>{
-    if(!результат?.победа) return;
-    const номер=Math.max(1,Math.min(ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА,
-      Math.floor(Number(результат.уровень)||1)));
-    const прежний=лучшие.get(номер);
-    if(!прежний||лучшеРезультатКампании(результат,прежний)) лучшие.set(номер,результат);
-  });
-  let очки=0;
-  лучшие.forEach((результат,номер)=>очки+=оценитьМастерствоКампании(результат,номер).очки);
-  return {очки,максимум:ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА*3,лучшие};
 }
 function показатьИтогКампании(элемент,исход){
   const м=исход?.метрики;
@@ -9101,22 +9005,12 @@ function показатьИтогКампании(элемент,исход){
   элемент.classList.remove("миссия-брифинг");
   элемент.classList.add("итог-боя");
   элемент.classList.toggle("итог-боя-поражение",!исход.победа);
-  const верх=document.createElement("div");
-  верх.className="итог-боя-верх";
   const заголовок=document.createElement("div");
   заголовок.className="итог-боя-заголовок";
   заголовок.textContent=исход.победа ?
     (кампанияЗавершена ? (РЕЖИМ_КАЛИБРОВКИ ? "Контрольный проход завершён" : "Кампания завершена") :
       "Уровень "+исход.уровень+" пройден") : "Попытка завершена";
-  верх.appendChild(заголовок);
-  const оценка=исход.победа&&м ? оценитьМастерствоКампании(м,исход.уровень) : null;
-  if(оценка){
-    const ранг=document.createElement("div");
-    ранг.className="итог-боя-ранг ранг-"+оценка.ранг.toLowerCase();
-    ранг.innerHTML="<span>Ранг</span><b>"+оценка.ранг+"</b>";
-    верх.appendChild(ранг);
-  }
-  элемент.appendChild(верх);
+  элемент.appendChild(заголовок);
   if(м){
     const метрики=document.createElement("div");
     метрики.className="итог-боя-метрики";
@@ -9126,12 +9020,6 @@ function показатьИтогКампании(элемент,исход){
       число.textContent=значение; текст.textContent=подпись; карточка.append(число,текст); метрики.appendChild(карточка);
     });
     элемент.appendChild(метрики);
-    if(оценка){
-      const мастерство=document.createElement("div");
-      мастерство.className="итог-боя-мастерство ранг-"+оценка.ранг.toLowerCase();
-      мастерство.textContent=текстДоСледующегоРанга(оценка);
-      элемент.appendChild(мастерство);
-    }
     const подпись=document.createElement("div");
     подпись.className="итог-боя-рекорд"+(исход.новыйРекорд?"":" обычный");
     if(!исход.победа) подпись.textContent="Осталось целей: "+(м.осталось||0);
@@ -9298,11 +9186,7 @@ function обновитьФормуВыбораКампании(){
   $("campaignPickerPrev").disabled=уровеньВВыбореКампании<=1;
   $("campaignPickerNext").disabled=уровеньВВыбореКампании>=последнийОткрытый;
   const этоТекущий=уровеньВВыбореКампании===уровень;
-  const лучший=лучшийРезультатКампании(уровеньВВыбореКампании);
-  const оценка=лучший ? оценитьМастерствоКампании(лучший,уровеньВВыбореКампании) : null;
-  $("campaignPickerState").textContent=оценка ?
-    "Ранг "+оценка.ранг+" · "+лучший.поворотов+" пов. · "+лучший.секунд+" с" :
-    уровеньВВыбореКампании<=максимумПройден ? "Уровень пройден" :
+  $("campaignPickerState").textContent=уровеньВВыбореКампании<=максимумПройден ? "Уровень пройден" :
     этоТекущий&&естьВосстановленныйБой ? "Бой сохранён — прогресс будет продолжен" : "Уровень доступен";
   $("campaignPickerApply").textContent=этоТекущий&&естьВосстановленныйБой ? "Продолжить уровень" :
     этоТекущий ? "Остаться на уровне" : "Выбрать уровень";
@@ -9366,10 +9250,6 @@ function переключитьРежимМеню(режим){
 function обновитьМенюКампании(){
   const последнийОткрытый=последнийОткрытыйУровеньКампании();
   const мир=применитьМирКампании(уровень);
-  if(!РЕЖИМ_КАЛИБРОВКИ){
-    const мастерство=сводкаМастерстваКампании();
-    $("menuWorld").textContent="Глава "+мир.глава+" · "+мир.коротко+" · ◆ "+мастерство.очки+"/"+мастерство.максимум;
-  }
   $("menuLevel").textContent = кампанияЗавершена ?
     (РЕЖИМ_КАЛИБРОВКИ ? "Контрольный проход завершён" : "Кампания завершена") :
     (РЕЖИМ_КАЛИБРОВКИ ? "Калибровка " : "Уровень ")+уровень+"/"+ПОСЛЕДНИЙ_УРОВЕНЬ_ПРОХОДА+" · "+имяМиссииКампании(уровень);
@@ -9398,11 +9278,7 @@ function выбратьУровеньКампании(сдвиг){
 
 function показатьБрифингКампании(элемент,номер=уровень){
   элемент.replaceChildren();
-  const лучший=лучшийРезультатКампании(номер);
-  if(лучший){
-    const оценка=оценитьМастерствоКампании(лучший,номер);
-    элемент.textContent="Лучший ранг "+оценка.ранг+" · "+лучший.поворотов+" пов. · "+лучший.секунд+" с";
-  }else элемент.textContent=фокусМиссииКампании(номер);
+  элемент.textContent=фокусМиссииКампании(номер);
   элемент.classList.remove("серия","итог-боя","итог-боя-поражение");
   элемент.classList.add("on","миссия-брифинг");
 }
